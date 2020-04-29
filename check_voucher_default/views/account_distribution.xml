@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Check Voucher Account Distribution Action -->
+        <record model="ir.actions.act_window" id="check_voucher_account_distribution_action_window">
+            <field name="name">check_voucher_account_distribution_action</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">check.voucher.account_distribution</field>
+            <field name="view_mode">tree</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+            Create First Transaction...
+                </p>
+            </field>
+        </record>
+
+        <!-- Check Voucher Account Distribution Action -->
+        <record model="ir.ui.view" id="check_voucher_account_distribution_list">
+            <field name="name">check_voucher_particulars_distribution_tree</field>
+            <field name="model">check.voucher.account_distribution</field>
+            <field name="arch" type="xml">
+                <tree editable="bottom">
+                    <field name="account_title"/>
+                    <field name="debit_amount" sum="Total Debit"/>
+                    <field name="credit_amount" sum="Total Credit"/>
+                </tree>
+            </field>
+        </record>
+    </data>
+</odoo>

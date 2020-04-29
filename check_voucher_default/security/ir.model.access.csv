@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_check_voucher_default,access.check.voucher,check_voucher_default.model_check_voucher,base.group_user,1,1,1,1
+access_check_voucher_default_particulars,access.check.voucher.particulars,check_voucher_default.model_check_voucher_particulars,base.group_user,1,1,1,1
+access_check_voucher_default_account_distribution,access.check.voucher.account_distribution,check_voucher_default.model_check_voucher_account_distribution,base.group_user,1,1,1,1

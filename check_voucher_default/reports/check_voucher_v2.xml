@@ -1,0 +1,386 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="report_check_voucher_v2">
+            <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+                    <t t-foreach="docs" t-as="doc">
+                        <style type="text/css">
+                        .flex-container {
+                            display: -webkit-box;
+                            display: -ms-flexbox;
+                            display: flex;
+                            -webkit-box-orient: horizontal;
+                            -webkit-box-direction: normal;
+                                -ms-flex-flow: row wrap;
+                                    flex-flow: row wrap;
+                          }
+
+                          
+                        .flex-container-prepared > div{
+
+                            margin: 5px;
+                            text-align: left;
+                            justify-content: center;
+                            font-size: 16px;
+                            -webkit-box-flex: 1;
+                            -ms-flex-positive: 2;
+                                flex-grow: 2;
+                        }
+
+                        .flex-container > div{
+
+                            margin: 5px;
+                            align-content: center;
+                             justify-content: center;
+                            font-size: 16px;
+                            -webkit-box-flex: 1;
+                            -ms-flex-positive: 2;
+                                flex-grow: 2;
+                        }
+
+
+                        .flex-header {
+                            margin: 10px;
+                            text-align: center;
+                            font-size: 9px;
+                            -webkit-box-pack: center;
+                                -ms-flex-pack: center;
+                                    justify-content: center;
+                            -webkit-box-align:right;
+                                -ms-flex-align:right;
+                                    align-items:right
+                            -webkit-box-flex: 2;
+                            -ms-flex-positive: 2;
+                                flex-grow: 2;
+                        }                     
+                        
+
+                        .table-head{
+                            text-align: left;
+                        }
+
+                        th{
+                            align-content: left;
+                          }
+
+                        span{
+                            text-align: left;
+                        }
+
+                        p.normal {
+                            font-weight: normal;
+                          }
+                          
+                        p.thick {
+                        font-weight: bold;
+                        }
+
+                        label.thick {
+                            font-weight: bold;
+                            }
+                        
+                        p.thicker {
+                        font-weight: 900;
+                        }
+                        
+                        table, tr, td, th, tbody, thead, tfoot {
+                        page-break-inside: avoid !important;
+                        }
+
+                        </style>
+
+                        <t t-set="payee" t-value="doc.payment_id.partner_id.name"/>
+                        <t t-set="voucher_no" t-value="doc.voucher_id_seq"/>
+                        <t t-set="date" t-value="doc.date" />
+                        <div class='flex-container'>
+                            <div class='flex-header'>
+                                <h4>CHECK VOUCHER</h4>
+                            </div>
+                        </div>
+                        <br/>
+                        <div class="flex-container">
+                            <div style="font-size:12px;">
+                                <table class="table table-sm">
+                                    <thead align="left">
+                                        <tr>
+                                            <th style="white-space: nowrap;">
+                                                <span>PAYEE: </span>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <span t-esc="payee"/>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <span>
+                                                    <t t-if="docs.partner_id.street != False">
+                                                        <t t-esc="docs.partner_id.street"/>
+                                                    </t>
+                                                    <t t-else="">
+                                                    </t>
+                                                    <t t-if="docs.partner_id.city != False">
+                                                        <t t-esc="docs.partner_id.city"/>
+                                                    </t>
+                                                    <t t-else="">
+                                                    </t>
+                                                    <t t-if="docs.partner_id.zip != False">
+
+                                                        <t t-esc="docs.partner_id.zip"/>
+                                                    </t>
+                                                    <t t-else="">
+                                                    </t>
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div style="font-size:12px;">
+                                <label for="docs.check_no_id" class="thick">Check&#160;No.</label>
+                                <t t-esc="docs.check_no_id"/>
+                                <br/>
+                                <label for="voucher_no" class='thick'>Document&#160;No.</label>
+                                <t t-esc="voucher_no"/>
+                                <br/>
+                                <label for="date" class='thick'>Date:</label>
+                                <t t-esc="date"/>
+                            </div>
+                        </div>
+                        <br/>
+
+                        <div class="flex-container">
+                            <div style="width: 47%; font-size:12px;">
+                                <b>PAYMENT INFORMATION</b>
+                                <br/>
+                                <label for="payee">Account&#160;Name:</label>
+                                <t t-esc="payee"/>
+                                <br/>
+                                <label for="docs.partner_bank_account_id.acc_number">Account&#160;Number:</label>
+                                <t t-esc="docs.partner_bank_id.name"/> - <t t-esc="docs.partner_bank_account_id.acc_number"/>
+                            </div>
+
+                            <div style="font-size:12px;">
+                                <b>AMOUNT</b>
+                                <br/>
+                                <t t-if="docs.total_amount > 0">
+                                    <span t-esc="docs.currency_id.name"/>
+                                    <t t-esc="'{:,.2f}'.format(docs.total_amount)"/>
+                                    <br/>
+                                    <t t-esc="docs.amount_in_words"/>
+                                </t>
+                                <t t-else="">
+                                </t>
+                            </div>
+                        </div>
+
+                        <t t-if="docs.description != False">
+                            <div name="default_description" class="flex-container">
+                                <div style="font-size:12px;">
+                                    <b>DESCRIPTION:</b>
+                                    <br/>
+                                    <span t-esc="docs.description"/>
+                                </div>
+                            </div>
+                        </t>
+                        <t t-else="">
+                            &#160;
+                        </t>
+
+                        <t t-set="invoice_ids_count" t-value="0"/>
+                        <t t-foreach="docs.invoice_ids" t-as="l">
+                            <t t-set="invoice_ids_count" t-value="invoice_ids_count+1"/>
+                        </t>
+
+                        <t t-if="invoice_ids_count > 0">
+                            <div class='flex-container'>
+                                <div>
+                                    <table width="100%" align="center" class="table table-sm" style="font-size:12px;">
+                                        <thead>
+                                            <tr>
+                                                <th class="table-head">
+                                                Particulars
+                                                </th>
+                                                <th class="table-head">
+                                                Description
+                                                </th>
+                                                <th class="table-head" style="text-align:right">
+                                                Amount
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <t t-set="i" t-value="1"/>
+                                            <tr t-foreach="docs.invoice_ids" t-as="l">
+                                                <td style="white-space: nowrap;">
+                                                    <span t-esc="l.invoice_id.number"/>
+                                                </td>
+                                                <td style="white-space: nowrap;">
+                                                    <span t-esc="l.description"/>
+                                                </td>
+                                                <td style="white-space: nowrap; text-align:right">
+                                                    <span t-esc="l.currency_id.symbol"/>
+                                                    <span t-esc="'{:,.2f}'.format(l.amount)"/>
+                                                </td>
+                                                <t t-set="i" t-value="i+1"/>
+                                            </tr>
+                                            <tr>
+                                                <td>
+
+                                                </td>
+                                                <td style="text-align:right">
+                                                    <b>
+                                                    Total
+                                                    </b>
+                                                </td>
+                                                <td style="text-align:right">
+                                                    <b>
+                                                        <span t-esc="docs.currency_id.symbol"/>
+                                                        <t t-esc="'{:,.2f}'.format(docs._compute_total_invoice())"/>
+                                                    </b>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </t>
+                        <t t-else="">
+                                &#160;
+                        </t>
+                        <br/>
+
+                        <t t-set="account_id_count" t-value="0"/>
+                        <t t-foreach="docs.account_ids" t-as="l">
+                            <t t-set="account_id_count" t-value="account_id_count+1"/>
+                        </t>
+
+                        <t t-if="account_id_count > 0">
+                            <div class='flex-container'>
+                                <div>
+                                    <table width="100%" align="left" class="table table-sm" cellpadding="0" style="font-size:12px;">
+                                        <thead>
+                                            <tr>
+                                                <th width="45%">
+                                                Account Title
+                                                </th>
+                                                <th style="text-align:right">
+                                                Debit
+                                                </th>
+                                                <th style="text-align:right">
+                                                Credit
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <t t-set="i" t-value="1"/>
+                                            <tr t-foreach="docs.account_ids" t-as="l">
+                                                <td>
+                                                    <span t-esc="l.account_title.code" class="oe_inline"/>
+                                                    <span t-esc="l.account_title.name" class="oe_inline"/>
+                                                </td>
+                                                <td style="white-space: nowrap; text-align:right">
+
+                                                    <span t-esc="docs.currency_id.symbol"/>
+                                                    <t t-esc="'{:,.2f}'.format(l.debit_amount)" class="oe_inline"/>
+
+                                                </td>
+                                                <td style="white-space: nowrap; text-align:right">
+
+                                                    <span t-esc="docs.currency_id.symbol"/>
+                                                    <t t-esc="'{:,.2f}'.format(l.credit_amount)" class="oe_inline"/>
+
+                                                </td>
+                                                <t t-set="i" t-value="i+1"/>
+                                            </tr>
+                                            <tr>
+                                                <td style="white-space: nowrap; text-align:right;">
+                                                    <b>
+                                                Total 
+                                                    </b>
+                                                </td>
+                                                <td style="white-space: nowrap; text-align:right">
+                                                    <b>
+                                                        <span t-esc="docs.currency_id.symbol"/>
+                                                        <t t-esc="'{:,.2f}'.format(docs._compute_total_debit())"/>
+                                                    </b>
+                                                </td>
+                                                <td style="white-space: nowrap; text-align:right">
+                                                    <b>
+                                                        <span t-esc="docs.currency_id.symbol"/>
+                                                        <t t-esc="'{:,.2f}'.format(docs._compute_total_credit())"/>
+                                                    </b>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </t>
+                        <t t-else="">
+                                &#160;
+                        </t>
+
+                        <div name="signatories" class="flex-container">
+                            <div>
+                                <table width="100%" align="left" style="font-size:12px;">
+                                    <thead style="display:table-row-group; text-align:center;">
+                                        <tr style="text-align:center;">
+                                            <th>Prepared By</th>
+                                            <th>Checked By</th>
+                                            <th>Approved By</th>
+                                            <th>Received By</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <td style="height:50px; white-space: nowrap;"></td>
+                                        <td style="height:50px; white-space: nowrap;"></td>
+                                        <td style="height:50px; white-space: nowrap;"></td>
+                                        <td style="height:50px; white-space: nowrap;"></td>
+                                    </tbody>
+                                    <tfoot style="text-align:center; display: table-row-group;">
+                                        <td style="white-space: nowrap;">
+                                            <t t-esc="docs.drafted_by_id.name"/>
+                                            <br/>
+                                            <t t-esc="docs.create_date.strftime('%m-%d-%Y %H:%M')"/>
+                                        </td>
+                                        <td style="white-space: nowrap;">
+                                            <t t-if="docs.verified_by_id.name != False">
+                                                <t t-esc="docs.certified_correct_by_id.name"/>
+                                                <br/>
+                                                <t t-esc="docs.date_verified.strftime('%m-%d-%Y %H:%M')"/>
+                                            </t>
+                                            <t t-else="">
+                                                <p></p>
+                                            </t>
+                                        </td>
+                                        <td style="white-space: nowrap;">
+                                            <t t-if="docs.verified_by_id.name != False">
+                                                <t t-esc="docs.certified_correct_by_id.name"/>
+                                                <br/>
+                                                <t t-esc="docs.date_verified.strftime('%m-%d-%Y %H:%M')"/>
+                                            </t>
+                                            <t t-else="">
+                                                <p></p>
+                                            </t>
+                                        </td>
+                                        <td style="text-align:left; white-space: nowrap;">Name: </td>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+    </data>
+
+</odoo>
+
+
+

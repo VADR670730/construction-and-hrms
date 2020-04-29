@@ -1,0 +1,34 @@
+<?xml version="1.0" ?>
+<odoo>
+
+    <data>
+        <record id="nte_email_template" model="mail.template">
+            <field name="name">Notice to Explain: Send By Email</field>
+            <field name="model_id" ref="hrms_compliance.model_hr_infraction_action_history"/>
+            <field name="email_from">${object.user_id.email_formatted |safe}</field>
+            <!-- <field name="partner_to">${object.emp_id.id}</field> -->
+            <!-- <field name="partner_ids">${object.emp_id}</field> -->
+            <field name="email_to">${object.emp_id.work_email or object.emp_id.parent_id.work_email}</field>
+            <field name="email_cc">${object.emp_id.parent_id.work_email}</field>
+            <field name="subject">Notice to Explain (Ref ${object.infraction_id.infraction_sequence_id})</field>
+            <field name="body_html" type="html">
+                <div style="margin: 0px; padding: 0px;">
+                    <p style="margin: 0px; padding: 0px; font-size: 13px;">
+                        Dear ${object.emp_id.name}
+                        <br /><br />
+                        It has come to our attention that you are being reported by one of our employees
+                        for violating one of our policies. 
+                        <br/><br/>
+                        Attached in this email is the Notice to Explain form which you need to fill out <br/> 
+                        within the next 7 working days <br/>
+                        Here is your the reference number for this case: ${object.infraction_id.infraction_sequence_id} <br/>
+                        If you have queries feel free to ask.
+                    </p>
+                </div>
+            </field>
+            <!-- <field name="report_template" ref="report_patient_card"/>
+            <field name="report_name">Patient Card_${(object.name_seq)}</field> -->
+        </record>
+    </data>
+
+</odoo>

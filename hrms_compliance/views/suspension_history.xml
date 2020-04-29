@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record id="hrv3_suspension_history_list" model="ir.ui.view">
+            <field name="name">Suspension History List</field>
+            <field name="model">suspension.history</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="emp_id" readonly="1" />
+                    <field name="infraction_id" readonly="1" />
+                    <field name="used_days" readonly="1" />
+                    <field name="date_from" readonly="1"/>
+                    <field name="date_to" readonly="1"/>
+                    <field name="duration" readonly="1"/>
+                    <field name="remaining_days" readonly="1"/>
+                    <field name="state" readonly="1"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="hrv3_suspension_history_form" model="ir.ui.view">
+            <field name="name">Suspension History Form</field>
+            <field name="model">suspension.history</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <field name="state" widget="statusbar" statusbar_visible="on_going,completed"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="infraction_id" readonly="1"/>
+                                <field name="emp_id" readonly="1"/>
+                                <field name="action_history_id" readonly="1" invisible="1" groups="base.group_no_one"/>
+                                <field name="contract_id" groups="base.group_no_one" />
+                            </group>
+                            <group>
+                                <field name="used_days" readonly="1"/>
+                                <field name="duration" readonly="1"/>
+                                <field name="remaining_days" readonly="1"/>
+                                <field name="date_from" readonly="1"/>
+                                <field name="date_to" readonly="1"/>
+                            </group>
+                        </group>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+
+        <record id="hrv3_suspension_history_action" model="ir.actions.act_window">
+            <field name="name">Suspension History</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">suspension.history</field>
+            <field name="view_mode">form,tree</field>
+            <field name="view_type">form</field>
+            <field name="view_id" ref="hrv3_suspension_history_list"/>
+        </record>
+
+
+    </data>
+</odoo>

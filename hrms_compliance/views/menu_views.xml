@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+  <data>
+
+    <!-- Top menu item -->
+    <menuitem name="Compliance" id="hrms_compliance_root" sequence="1"
+              web_icon="hrms_compliance,static/description/compliance_graphic2.png"/>
+
+    <!-- SubMenu -->
+    <menuitem name="Infractions" id="hrms_compliance.infractions"
+              parent="hrms_compliance_root"
+              action="hrms_compliance_infraction_action_window"/>
+    <menuitem name="Configuration" id="hrms_compliance_configuration"
+              parent="hrms_compliance_root"/>
+    <menuitem name="Policy Codes" id="hrms_compliance_policy_code"
+              parent="hrms_compliance_configuration" sequence="1"
+              action="hrv3_company_policy_action_window"/>
+    <menuitem name="Offense Codes" id="hrms_compliance_offense_code"
+              parent="hrms_compliance_configuration" sequence="2"
+              action="hrv3_company_offense_action_window"/>
+    <menuitem name="Violation" id="hrms_compliance_violation"
+              parent="hrms_compliance_configuration" sequence="3"
+              action="hrv3_company_violation_action_window"/>
+    <menuitem name="Suspension History" id="hrv3_suspension_history_menu"
+              parent="hrms_compliance_configuration"
+              action="hrv3_suspension_history_action" sequence="4"/>
+    <menuitem name="Action History" id="hrv3_action_history_menu"
+              parent="hrms_compliance_configuration"
+              action="hrv3_action_history_action_window" sequence="5"/>
+  </data>
+</odoo>

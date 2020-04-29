@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+  <record id="hr_salary_rule_form" model="ir.ui.view">
+    <field name="name">hr.salary.rule.form</field>
+    <field name="model">hr.salary.rule</field>
+    <field name="inherit_id" ref="hr_payroll.hr_salary_rule_form"/>
+    <field name="arch" type="xml">
+      <field name="company_id" position="after">
+        <field name="taxable_rule"/>
+        <field name="net_salary"/>
+      </field>
+    </field>
+  </record>
+
+  <!-- Inherit Form view -->
+  <record id="hr_payslip_run_form" model="ir.ui.view">
+    <field name="name">hr.payslip.run.form</field>
+    <field name="model">hr.payslip.run</field>
+    <field name="inherit_id" ref="hr_payroll.hr_payslip_run_form"/>
+    <field name="arch" type="xml">
+      <label for="date_start" position="before">
+        <field name="month_year" placeholder="mm/YYYY"/>
+        <field name="cutoff_type" invisible="1"/>
+        <label for="date_start" string="Period"/>
+        <div>
+          <field name="cutoff_template_id" options="{'no_create': True}" class="oe_inline"/>
+          <field name="cutoff" attrs="{'invisible': [('cutoff_type', 'in', ['monthly'])], 'required': [('cutoff_type', 'in', ['bi-monthly'])]}" class="oe_inline"/>
+        </div>
+      </label>
+
+      <field name="credit_note" position="after">
+        <field name="company_id" groups="base.group_multi_company" options="{'no_create': True}"/>
+        <field name="compute_thirtheenth_month"/>
+      </field>
+    </field>
+  </record>
+
+  <!-- Inherit Form view -->
+  <record id="view_hr_payslip_form" model="ir.ui.view">
+    <field name="name">hr.payslip.form</field>
+    <field name="model">hr.payslip</field>
+    <field name="inherit_id" ref="hr_payroll.view_hr_payslip_form"/>
+    <field name="arch" type="xml">
+      <label for="date_from" position="before">
+        <field name="payslip_period" placeholder="mm/YYYY"/>
+        <field name="cutoff_type" invisible="1"/>
+        <label for="date_start" string="Cutoff"/>
+        <div>
+          <field name="cutoff_template_id" options="{'no_create': True}" class="oe_inline"/>
+          <field name="cutoff" attrs="{'invisible': [('cutoff_type', 'in', ['monthly'])], 'required': [('cutoff_type', 'in', ['bi-monthly'])]}" class="oe_inline"/>
+        </div>
+      </label>
+      <field name="credit_note" position="after">
+        <field name="compute_thirtheenth_month"/>
+        <field name="for_final_payment"/>
+      </field>
+    </field>
+  </record>
+
+</odoo>

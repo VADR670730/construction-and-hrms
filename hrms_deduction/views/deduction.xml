@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data>
+
+    <record id="hr_deduction_type_view_tree" model="ir.ui.view">
+      <field name="name">hr.deduction.type.tree</field>
+      <field name="model">hr.deduction.type</field>
+      <field name="arch" type="xml">
+        <tree string="Deduction Type">
+          <field name="name"/>
+          <field name="code"/>
+          <field name="deduction_type"/>
+        </tree>
+      </field>
+    </record>
+
+    <record id="hr_deduction_type_view_form" model="ir.ui.view">
+      <field name="name">hr.deduction.type.form</field>
+      <field name="model">hr.deduction.type</field>
+      <field name="arch" type="xml">
+        <form string="Deduction Type">
+          <sheet>
+            <div class="oe_title">
+              <h1>
+                <field name="name" placeholder="Allowance"/>
+              </h1>
+              <div name="options_active">
+                <div>
+                  <label for="code" class="oe_inline" string="Code"/>
+                  <field name="code" class="oe_inline oe_input_align"/>
+                </div>
+              </div>
+            </div>
+            <group>
+              <field name="deduction_type"/>
+              <field name="description" nolabel="1" colspan="2" placeholder="Allowance Description..."/>
+            </group>
+          </sheet>
+        </form>
+      </field>
+    </record>
+
+    <record id="hr_deduction_type_action_form" model="ir.actions.act_window">
+      <field name="name">Deduction Type</field>
+      <field name="res_model">hr.deduction.type</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="menu_config_hr_deduction_type_action_form" action="hr_deduction_type_action_form" parent="hr_payroll.menu_hr_payroll_configuration" sequence="10"/>
+
+
+    <record id="hr_deduction_view_tree" model="ir.ui.view">
+      <field name="name">hr.deduction.tree</field>
+      <field name="model">hr.deduction</field>
+      <field name="arch" type="xml">
+        <tree string="Deduction">
+          <field name="currency_id" invisible="1"/>
+          <field name="employee_id"/>
+          <field name="name"/>
+          <field name="deduction_id"/>
+          <field name="deduction_type"/>
+          <field name="payable_per_cutoff"/>
+          <field name="remaining_balance"/>
+          <field name="state"/>
+        </tree>
+      </field>
+    </record>
+
+    <record id="hr_deduction_view_form" model="ir.ui.view">
+      <field name="name">hr.deduction.form</field>
+      <field name="model">hr.deduction</field>
+      <field name="arch" type="xml">
+        <form string="Deduction">
+          <header>
+            <button name="submit_request" string="Submit"
+              class="oe_highlight" states="draft" type="object"/>
+            <button name="confirm_request" string="Confirm"
+              class="oe_highlight" states="submitted" type="object"/>
+            <button name="verify_request" string="Verify"
+              class="oe_highlight" states="confirmed" type="object"/>
+            <button name="approve_request" string="Approve"
+              class="oe_highlight" states="verified" type="object"/>
+            <button name="cancel_request" string="Cancel"
+              class="oe_highlight" states="submitted,confirmed,verified" type="object"/>
+            <button name="reset_to_draft_request"
+              string="Reset to Draft" class="oe_highlight" states="canceled" type="object"/>
+            <button name="set_paused" icon="fa-pause-circle" attrs="{'invisible': ['|', ('deduction_type', '=', 'statutory'), ('loan_state', 'in', [False, 'paused', 'paid'])]}" string="Pause" class="oe_highlight" type="object"/>
+            <button name="set_inprogress" icon="fa-play-circle" attrs="{'invisible': ['|', ('deduction_type', '=', 'statutory'), ('loan_state', 'in', [False, 'inprogress', 'paid'])]}" string="Resume" class="oe_highlight" type="object"/>
+            <!-- <button name="submit_request" string="Submit" class="oe_highlight" states="draft" type="object"/> -->
+            <field name="state" widget="statusbar" statusbar_visible="draft,approved" statusbar_colors="{'draft':'green'}"/>
+          </header>
+          <sheet>
+            <div class="oe_button_box" name="button_box">
+            </div>
+            <div class="oe_title">
+              <h1>
+                <field name="employee_id" placeholder="Employee Name"/>
+              </h1>
+              <div name="options_active">
+                <div>
+                  <label for="contract_id" class="oe_inline" string="Contract"/>
+                  <field name="contract_id" class="oe_inline oe_input_align" options="{'no_create': True}"/>
+                </div>
+              </div>
+            </div>
+            <group>
+              <group>
+                <field name="deduction_id" options="{'no_create': True}"/>
+                <field name="code"/>
+                <field name="deduction_type"/>
+              </group>
+              <group>
+                <field name="currency_id" invisible="1"/>
+                <field name="name" readonly="1" force_save="1"/>
+                <field name="loan_state" attrs="{'invisible': [('loan_state', 'in', [False])]}"/>
+                <field name="settle_at_once" widget="boolean_toggle" attrs="{'invisible': [('loan_state', 'in', ['paid', False])]}"/>
+                <field name="remaining_balance"/>
+              </group>
+            </group>
+            <group string="Details">
+              <group>
+                <field name="monthly_payable"/>
+                <field name="payable_months"/>
+                <label for="date_from" string="Payment Duration"/>
+                <div>
+                  <field name="date_from" class="oe_inline"/>-
+                  <field name="date_to" class="oe_inline"/>
+                </div>
+                <field name="number_of_week"/>
+              </group>
+              <group>
+                <field name="total_deduction"/>
+                <field name="payable_per_cutoff"/>
+              </group>
+            </group>
+            <field name="description" placeholder="Description..." colspan="2"/>
+            <group name="history" string="Payment History">
+              <field name="line_ids" colspan="2" nolabel="1">
+                <tree string="history" editable="top">
+                  <field name="currency_id" invisible="1"/>
+                  <field name="payslip_id"/>
+                  <field name="date_from"/>
+                  <field name="date_to"/>
+                  <field name="amount"/>
+                  <field name="remaining_balance"/>
+                </tree>
+              </field>
+            </group>
+            <newline/>
+            <group>
+              <group>
+                <label for="submitted_by" states="submitted,confirmed,verified,approved"/>
+                <div states="submitted,confirmed,verified,approved">
+                  <field name="submitted_by" class="oe_inline"/>
+                  <field name="submitted_date" class="oe_inline"/>
+                </div>
+                <label for="confirmed_by" states="confirmed,verified,approved"/>
+                <div states="confirmed,verified,approved">
+                  <field name="confirmed_by" class="oe_inline"/>
+                  <field name="confirmed_date" class="oe_inline"/>
+                </div>
+                <label for="verified_by" states="verified,approved"/>
+                <div states="verified,approved">
+                  <field name="verified_by" class="oe_inline"/>
+                  <field name="verified_date" class="oe_inline"/>
+                </div>
+              </group>
+              <group>
+                <label for="approved_by" states="approved"/>
+                <div states="approved">
+                  <field name="approved_by" class="oe_inline"/>
+                  <field name="approved_date" class="oe_inline"/>
+                </div>
+                <label for="canceled_by" states="canceled"/>
+                <div states="canceled">
+                  <field name="canceled_by" class="oe_inline"/>
+                  <field name="canceled_date" class="oe_inline"/>
+                </div>
+              </group>
+            </group>
+          </sheet>
+          <div class="oe_chatter">
+            <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+            <field name="activity_ids" widget="mail_activity"/>
+            <field name="message_ids" widget="mail_thread"/>
+          </div>
+        </form>
+      </field>
+    </record>
+
+    <record id="hr_deduction_action_form" model="ir.actions.act_window">
+      <field name="name">Deduction/Loan</field>
+      <field name="res_model">hr.deduction</field>
+      <field name="view_mode">tree,form</field>
+      <field name="view_type">form</field>
+    </record>
+
+    <menuitem action="hr_deduction_action_form" id="menu_hr_deduction_action" parent="hr_payroll.menu_hr_payroll_root"/>
+
+
+    <record id="hr_employee_deduction_action_form" model="ir.actions.act_window">
+      <field name="name">Deduction/Loan</field>
+      <field name="res_model">hr.deduction</field>
+      <field name="view_mode">tree,form</field>
+      <field name="domain">[('employee_id', 'in', active_ids)]</field>
+    </record>
+
+    <!-- Inherit Form view -->
+    <record id="view_employee_form" model="ir.ui.view">
+      <field name="name">hr.employee.form</field>
+      <field name="model">hr.employee</field>
+      <field name="inherit_id" ref="hr.view_employee_form"/>
+      <field name="arch" type="xml">
+        <div name="button_box" position="inside">
+          <button class="oe_inline oe_stat_button" type="action"
+            context="{'default_employee_id': active_id}" string="Loan/Deduction"
+            name="%(hr_employee_deduction_action_form)d" icon="fa-file">
+          </button>
+        </div>
+      </field>
+    </record>
+
+    <record id="view_hr_payslip_form" model="ir.ui.view">
+      <field name="name">hr.payslip.form</field>
+      <field name="model">hr.payslip</field>
+      <field name="inherit_id" ref="hr_payroll.view_hr_payslip_form"/>
+      <field name="arch" type="xml">
+        <xpath expr="//field[@name='input_line_ids']/tree/field[@name='contract_id']" position="before">
+          <field name="deduction_id" invisible="1"/>
+        </xpath>
+      </field>
+    </record>
+
+  </data>
+</odoo>

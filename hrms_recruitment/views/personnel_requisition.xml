@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data>
+
+
+    <!-- Personnel Requisition List View  -->
+    <record model="ir.ui.view" id="hrms_v3_personnel_requisition_list">
+      <field name="name">hrms_v3_personnel_requisition_list</field>
+      <field name="model">hr.personnel.requisition</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="company_id"/>
+          <field name="job_position_id"/>
+          <field name="department_id"/>
+          <field name="job_location_id"/>
+          <field name="responsible_id"/>
+          <field name="state"/>
+        </tree>
+      </field>
+    </record>
+
+    <!-- Personnel Requisition Form View -->
+    <record model="ir.ui.view" id="hrms_v3_personnel_requisition_form">
+      <field name="name">hrms_v3_personnel_requisition_form</field>
+      <field name="model">hr.personnel.requisition</field>
+      <field name="arch" type="xml">
+        <form string="Job Requisition">
+          <header>
+            <button name="submit_jobreq_form" string="Submit" class="oe_highlight" states="draft" type="object"/>
+            <button name="approve_jobreq_form" string="Approve" class="oe_highlight" states="for_approval" type="object"/>
+            <button name="cancel_jobreq_form" string="Cancel" class="oe_highlight" states="for_approval" type="object"/>
+            <button name="reset_to_draft" string="Reset to Draft" class="oe_highlight" states="canceled" type="object"/>
+            <button name="close_requisition" string="Close Requisition" class="oe_highlight" states="approved" type="object"/>
+            <field name="state" widget="statusbar" statusbar_visible="draft,for_approval,approved,canceled,closed"/>
+          </header>
+
+          <sheet>
+            <div class="oe_title">
+              <h1>
+                Job Requisition
+              </h1>
+            </div>
+
+            <div class="oe_title">
+              <h2>
+                <field name="job_req_id_seq"/>
+              </h2>
+            </div>
+
+            <group>
+              <group>
+                <field name="company_id" attrs="{ 'readonly': [('state','not in',['draft'])] }" />
+                <field name="job_position_id" attrs="{ 'readonly': [('state','not in',['draft'])] }"/>
+                <field name="department_id"/>
+                <field name="job_location_id"/>
+                <field name="website_id"/>
+                <field name="responsible_id" attrs="{ 'readonly': [('state','not in',['draft'])] }"/>
+                <field name="email_alias" attrs="{ 'readonly': [('state','not in',['draft'])] }"/>
+                <field name="expected_new_employee" attrs="{ 'readonly': [('state','not in',['draft'])] }"/>
+              </group>
+
+              <group>
+                <field name="proposed_salary" attrs="{ 'readonly': [('state','not in',['draft'])] }"/>
+                <field name="replacement_for_id_check_box" class="oe_inline" attrs="{ 'readonly': [('state','not in',['draft'])] }"/>
+                <field name="replacement_for_id" class="oe_inline" widget="many2many_tags" attrs="{'invisible': [('replacement_for_id_check_box','=', False)], 'readonly': [('state','not in',['draft'])], 'required': [('replacement_for_id_check_box','=',True)]}" domain="[('job_id','=',job_position_id)]" />
+                <!-- <field name="replacement_for_id" attrs="{'invisible': [('replacement_for_id_check_box','=', False)]}">
+                      <tree>
+                       <field name="name"/>
+                       <field name="contract_id"/>
+                      </tree>
+                </field> -->
+
+                <field name="replacement_emp_job_id" attrs="{'invisible': [('replacement_for_id_check_box','=', False)], 'readonly': [('state','not in',['draft'])]}"/>
+                <field name="replacement_contract" widget="many2many_tags" attrs="{'invisible': [('replacement_for_id_check_box','=', False)], 'readonly': [('state','not in',['draft'])]}"/>
+
+              </group>
+            </group>
+
+            <notebook>
+              <page string="Job Description">
+                <field name="job_description"/>
+              </page>
+
+              <page string="Skills And Qualification">
+                <label for="skills_ids"/>
+                <field name="skills_ids" attrs="{'readonly': [('state','not in',('draft'))]}">
+                  <tree editable="bottom">
+                    <field name="skill_name"/>
+                    <field name="skill_type_id"/>
+                    <field name="skill_level_id" context="{'default_skill_name_id': active_id}"/>
+                  </tree>
+                </field>
+
+                <label for="job_qualification">Qualification</label>
+                <field name="job_qualification" attrs="{'readonly': [('state','not in',('draft'))]}"/>
+              </page>
+            </notebook>
+          </sheet>
+
+          <div class="oe_chatter">
+            <field name="message_follower_ids" widget="mail_followers" />
+            <field name="activity_ids" widget="mail_activity"/>
+            <field name="message_ids" widget="mail_thread" />
+          </div>
+        </form>
+      </field>
+    </record>
+
+    <record id="EmployeeSkillLevel_view_form" model="ir.ui.view">
+      <field name="name">EmployeeSkillLevel.form</field>
+      <field name="model">hr.employee.skills.level</field>
+      <field name="arch" type="xml">
+        <form string="Skill Level">
+          <sheet>
+            <group name="skill_level">
+              <group>
+                <field name="skill_name_id" 
+                readonly="1"
+                 groups="base.group_no_one"/>
+                <field name="skill_level"/>
+              </group>
+              <group>
+                <field name="skill_level_description"/>
+              </group>
+            </group>
+          </sheet>
+        </form>
+      </field>
+    </record>
+
+    <record model="ir.actions.act_window" id="hrmsv3_personnel_requisition_action_window">
+
+      <field name="name">Personnel Requisition</field>
+      <field name="res_model">hr.personnel.requisition</field>
+      <field name="type">ir.actions.act_window</field>
+      <field name="view_mode">tree,form</field>
+      <field name="view_id" eval="hrms_v3_personnel_requisition_list"/>
+      <field name="help" type="html">
+        <p class="o_view_nocontent_smiling_face">
+          Create your Job Requisition!
+        </p>
+      </field>
+    </record>
+
+
+    <menuitem name="Job Requisition" sequence="1" id="hrms_v3_personnel_requisition_menu" parent="hr_recruitment.menu_hr_recruitment_root" action="hrmsv3_personnel_requisition_action_window" />
+  </data>
+</odoo>

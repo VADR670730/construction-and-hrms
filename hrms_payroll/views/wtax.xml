@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+  <record id="withholding_tax_view_tree" model="ir.ui.view">
+    <field name="name">withholding.tax.tree</field>
+    <field name="model">withholding.tax</field>
+    <field name="arch" type="xml">
+      <tree string="Withhilding Tax">
+        <field name="name"/>
+        <field name="valid_start"/>
+        <field name="valid_end"/>
+      </tree>
+    </field>
+  </record>
+
+  <record id="withholding_tax_view_form" model="ir.ui.view">
+    <field name="name">withholding.tax.form</field>
+    <field name="model">withholding.tax</field>
+    <field name="arch" type="xml">
+      <form string="Withhilding Tax">
+        <sheet>
+          <div class="oe_title">
+            <h1>
+              <field name="name" placeholder="Title" required="1"/>
+            </h1>
+            <div name="options_active">
+              <div>
+                <label for="valid_start" class="oe_inline" string="Validity Date"/>
+                <field name="valid_start" class="oe_inline oe_input_align" required="1"/>
+                <label for="valid_end" class="oe_inline" string=" To "/>
+                <field name="valid_end" class="oe_inline oe_input_align" required="1"/>
+              </div>
+            </div>
+          </div>
+          <field name="line_ids" nolabel="1" colspan="2">
+            <tree string="Withhilding Tax Table" editable="bottom">
+              <field name="wage_type"/>
+              <field name="min_salary"/>
+              <field name="max_salary"/>
+              <field name="percentage"/>
+              <field name="additional"/>
+            </tree>
+          </field>
+        </sheet>
+      </form>
+    </field>
+  </record>
+
+  <record id="withholding_tax_action_form" model="ir.actions.act_window">
+    <field name="name">Withholding Table</field>
+    <field name="res_model">withholding.tax</field>
+    <field name="view_mode">tree,form</field>
+  </record>
+
+  <menuitem id="menu_config_withholding_tax" action="withholding_tax_action_form" parent="hr_payroll.menu_hr_payroll_configuration" sequence="12"/>
+
+</odoo>

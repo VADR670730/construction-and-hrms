@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record model="ir.rule" id="check_voucher_edit">
+
+            <field name="name">Check Voucher Edit</field>
+        
+            <field name="model_id" ref="check_voucher.check.voucher"/>
+        
+            <field eval="0" name="perm_unlink"/>
+        
+            <field eval="0" name="perm_write"/>
+        
+            <field eval="1" name="perm_read"/>
+        
+            <field eval="0" name="perm_create"/>
+        
+            <field name="domain_force">[ ('state','not in ',['draft'])]</field>
+        
+        </record>
+    </data>
+</odoo>
+

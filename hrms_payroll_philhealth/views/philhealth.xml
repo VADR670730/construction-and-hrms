@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+  <!-- Inherit Form view -->
+  <record id="hr_salary_rule_form" model="ir.ui.view">
+    <field name="name">hr.salary.rule.form</field>
+    <field name="model">hr.salary.rule</field>
+    <field name="inherit_id" ref="hr_payroll.hr_salary_rule_form"/>
+    <field name="arch" type="xml">
+      <field name="company_id" position="after">
+        <label for="philhealth_use"/>
+        <div>
+          <field name="philhealth_use" class="oe_inline"/>
+          <field name="philhealth_type" widget="radio" options="{'horizontal': true}" attrs="{'required': [('philhealth_use', '=', True)], 'invisible': [('philhealth_use', '=', False)]}" class="oe_inline"/>
+        </div>
+      </field>
+    </field>
+  </record>
+
+  <!-- Inherit Form view -->
+  <record id="view_employee_form" model="ir.ui.view">
+    <field name="name">hr.employee.form</field>
+    <field name="model">hr.employee</field>
+    <field name="inherit_id" ref="hr.view_employee_form"/>
+    <field name="arch" type="xml">
+      <field name="passport_id" position="after">
+        <field name="philhealth_number"/>
+      </field>
+    </field>
+  </record>
+
+  <record id="philhealth_contribution_employee_summary_view_pivot" model="ir.ui.view">
+    <field name="name">philhealth.contribution.employee.summary.pivot</field>
+    <field name="model">philhealth.contribution.employee.summary</field>
+    <field name="arch" type="xml">
+      <pivot string="Philhealth Summary Analysis">
+        <field name="employee_id" type="row"/>
+        <field name="applicable_date" type="col"/>
+        <field name="employee" sum="Total" type="measure"/>
+        <field name="employer" sum="Total" type="measure"/>
+        <field name="total" sum="Total" type="measure"/>
+      </pivot>
+    </field>
+  </record>
+
+  <record id="philhealth_contribution_employee_summary_action_form" model="ir.actions.act_window">
+    <field name="name">Employee Philhealth Contributions</field>
+    <field name="res_model">philhealth.contribution.employee.summary</field>
+    <field name="view_mode">pivot</field>
+  </record>
+
+  <menuitem id="menu_philhealth_contribution_employee_summary" action="philhealth_contribution_employee_summary_action_form" name="Philhealth Contribution" parent="hrms_payroll.menu_hr_payslip_report"/>
+
+  <record id="philhealth_contribution_summary_view_tree" model="ir.ui.view">
+    <field name="name">philhealth.contribution.summary.tree</field>
+    <field name="model">philhealth.contribution.summary</field>
+    <field name="arch" type="xml">
+      <tree string="Philthealth Contribution">
+        <field name="company_id" groups="base.group_multi_company"/>
+        <field name="reference_number"/>
+        <field name="applicable_date" placeholder="MM/YYYY"/>
+        <field name="date"/>
+        <field name="amount"/>
+        <field name="confirmation_number"/>
+        <field name="pi_status"/>
+        <field name="state"/>
+      </tree>
+    </field>
+  </record>
+
+  <record id="philhealth_contribution_summary_view_form" model="ir.ui.view">
+    <field name="name">philhealth.contribution.summary.form</field>
+    <field name="model">philhealth.contribution.summary</field>
+    <field name="arch" type="xml">
+      <form string="Philhealth Contribution">
+        <header>
+          <button name="submit_request" string="Submit"
+            class="oe_highlight" states="draft" type="object"/>
+          <button name="confirm_request" string="Confirm"
+            class="oe_highlight" states="submitted" type="object"/>
+          <button name="verify_request" string="Verify"
+            class="oe_highlight" states="confirmed" type="object"/>
+          <button name="approve_request" string="Approve"
+            class="oe_highlight" states="verified" type="object"/>
+          <button name="cancel_request" string="Cancel"
+            class="oe_highlight" states="submitted,confirmed,verified" type="object"/>
+          <button name="reset_to_draft_request"
+            string="Reset to Draft" class="oe_highlight" states="canceled" type="object"/>
+          <field name="state" widget="statusbar" statusbar_visible="draft,approved" statusbar_colors="{'draft':'green'}"/>
+        </header>
+        <sheet>
+          <div class="oe_title">
+            <h1>
+              <field name="reference_number" placeholder="ER No." required="1"/>
+            </h1>
+            <div name="options_active">
+              <div>
+                <label for="applicable_date" class="oe_inline"/>
+                <field name="applicable_date" placeholder="MM/YYYY" class="oe_inline oe_input_align" required="1"/>
+                <button name="get_philhealth_contributions" string="Load Data" type="object" icon="fa-calendar-check"
+                  class="oe_link oe_inline" states="draft"/>
+              </div>
+            </div>
+          </div>
+          <group>
+            <group>
+              <field name="date"/>
+              <field name="transaction_time"/>
+              <field name="amount"/>
+              <field name="paid_by"/>
+            </group>
+            <group>
+              <field name="company_id" groups="base.group_multi_company"/>
+              <field name="confirmation_number"/>
+              <field name="pi_status"/>
+              <field name="remarks"/>
+            </group>
+          </group>
+          <field name="line_ids" colspan="2" nolabel="1">
+            <tree string="employee Contribution" editable="top">
+              <field name="employee_id"/>
+              <field name="philhealth_number"/>
+              <field name="employee" sum="Total"/>
+              <field name="employer" sum="Total"/>
+              <field name="total" sum="Total"/>
+            </tree>
+          </field>
+          <group>
+            <group>
+              <label for="submitted_by" states="submitted,confirmed,verified,approved"/>
+              <div states="submitted,confirmed,verified,approved">
+                <field name="submitted_by" class="oe_inline"/>
+                <field name="submitted_date" class="oe_inline"/>
+              </div>
+              <label for="confirmed_by" states="confirmed,verified,approved"/>
+              <div states="confirmed,verified,approved">
+                <field name="confirmed_by" class="oe_inline"/>
+                <field name="confirmed_date" class="oe_inline"/>
+              </div>
+              <label for="verified_by" states="verified,approved"/>
+              <div states="verified,approved">
+                <field name="verified_by" class="oe_inline"/>
+                <field name="verified_date" class="oe_inline"/>
+              </div>
+            </group>
+            <group>
+              <label for="approved_by" states="approved"/>
+              <div states="approved">
+                <field name="approved_by" class="oe_inline"/>
+                <field name="approved_date" class="oe_inline"/>
+              </div>
+              <label for="canceled_by" states="canceled"/>
+              <div states="canceled">
+                <field name="canceled_by" class="oe_inline"/>
+                <field name="canceled_date" class="oe_inline"/>
+              </div>
+            </group>
+          </group>
+        </sheet>
+        <div class="oe_chatter">
+          <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+          <field name="activity_ids" widget="mail_activity"/>
+          <field name="message_ids" widget="mail_thread"/>
+        </div>
+      </form>
+    </field>
+  </record>
+
+  <record id="philhealth_contribution_summary_action_form" model="ir.actions.act_window">
+    <field name="name">Philhealth Contributions</field>
+    <field name="res_model">philhealth.contribution.summary</field>
+    <field name="view_mode">tree,form</field>
+  </record>
+
+  <menuitem id="menu_philhealth_contribution_summary" action="philhealth_contribution_summary_action_form" name="Philhealth Contributions" parent="hr_payroll.menu_hr_payroll_root"/>
+
+</odoo>
