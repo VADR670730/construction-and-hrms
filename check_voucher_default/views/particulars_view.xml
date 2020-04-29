@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- Check Voucher Particulars Action -->
+        <record model="ir.actions.act_window" id="check_voucher_particulars_action_window">
+            <field name="name">check_voucher_particulars_action</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">check.voucher.particulars</field>
+            <field name="view_mode">tree</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+            Create First Transaction...
+                </p>
+            </field>
+        </record>
+
+        <!-- Check Voucher Particulars Tree-->
+        <record model="ir.ui.view" id="check_voucher_particulars_list">
+            <field name="name">check_voucher_particulars_tree</field>
+            <field name="model">check.voucher.particulars</field>
+            <field name="arch" type="xml">
+                <tree editable="bottom">
+                    <field name="check_voucher_id" invisible="1"/>
+                    <field name="partner_id" invisible='1'/>
+                    <field name="invoice_id" domain="[('partner_id','=',partner_id),('type', '=', 'in_invoice')]"/>
+                    <field name="description" required="1"/>
+                    <field name="currency_id" invisible="1"/>
+                    <field name="amount" widget='monetary' options="{'currency_field': 'currency_id'}" sum='Total Amount' readonly="0"/>            
+                </tree>
+            </field>
+        </record>
+    </data>
+</odoo>

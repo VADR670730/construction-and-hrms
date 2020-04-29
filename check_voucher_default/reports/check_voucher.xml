@@ -1,0 +1,413 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="report_check_voucher">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="doc">
+                    <style type="text/css">
+                        .flex-container {
+                            display: -webkit-box;
+                            display: -ms-flexbox;
+                            display: flex;
+                            -webkit-box-orient: horizontal;
+                            -webkit-box-direction: normal;
+                                -ms-flex-flow: row wrap;
+                                    flex-flow: row wrap;
+                            border-style: solid solid none solid;
+                            
+                          }
+
+                          .flex-container-particulars {
+                            display: -webkit-box;
+                            display: -ms-flexbox;
+                            display: flex;
+                            -webkit-box-orient: horizontal;
+                            -webkit-box-direction: normal;
+                                -ms-flex-flow: row wrap;
+                                    flex-flow: row wrap;
+                            border-style: solid solid none solid;
+                            
+                          }
+
+                          .flex-container-account-title {
+
+                            display: -webkit-box;
+                            display: -ms-flexbox;
+                            display: flex;
+                            -webkit-box-orient: horizontal;
+                            -webkit-box-direction: normal;
+                                -ms-flex-flow: row;
+                                    flex-flow: row;
+                            border-style: none solid solid solid;
+                          }
+
+                          .flex-container-amount-bank-check {
+
+                            display: -webkit-box;
+                            display: -ms-flexbox;
+                            display: flex;
+                            -webkit-box-orient: horizontal;
+                            -webkit-box-direction: normal;
+                                -ms-flex-flow: row wrap;
+                                    flex-flow: row wrap;
+                            border-style: solid;
+
+                          }
+
+                          .flex-container-prepared {
+                            display: -webkit-box;
+                            display: -ms-flexbox;
+                            display: flex;
+                            -webkit-box-pack: space-evenly;
+                            -ms-flex-pack: space-evenly;
+                            justify-content: space-evenly;
+                            -ms-flex-line-pack: center;
+                            align-content: center;
+                            -webkit-box-orient: horizontal;
+                            -webkit-box-direction: normal;
+                                -ms-flex-flow: row wrap;
+                                    flex-flow: row wrap;
+                            border-style: none solid solid solid;
+                          }
+
+                        .flex-container-account-title > div{
+
+                            margin: 5px;
+                            text-align: left;
+                            justify-content: center;
+                            font-size: 16px;
+                            -webkit-box-flex: 2;
+                            -ms-flex-positive: 2;
+                                flex-grow: 1;
+                        }
+
+                        .flex-container-prepared > div{
+
+                            margin: 5px;
+                            text-align: left;
+                            justify-content: center;
+                            font-size: 16px;
+                            -webkit-box-flex: 1;
+                            -ms-flex-positive: 2;
+                                flex-grow: 2;
+                        }
+
+                        .flex-container > div{
+
+                            margin: 5px;
+                            align-content: center;
+                             justify-content: center;
+                            font-size: 16px;
+                            -webkit-box-flex: 1;
+                            -ms-flex-positive: 2;
+                                flex-grow: 2;
+                        }
+
+
+                        .flex-header {
+                            margin: 10px;
+                            text-align: center;
+                            font-size: 9px;
+                            -webkit-box-pack: center;
+                                -ms-flex-pack: center;
+                                    justify-content: center;
+                            -webkit-box-align:right;
+                                -ms-flex-align:right;
+                                    align-items:right
+                            -webkit-box-flex: 2;
+                            -ms-flex-positive: 2;
+                                flex-grow: 2;
+                            
+                        }
+
+                        .flex-container-vertical {
+                            display: -webkit-box;
+                            display: -ms-flexbox;
+                            display: flex;
+                            -webkit-box-orient: horizontal;
+                            -webkit-box-direction: normal;
+                                -ms-flex-flow: column wrap;
+                                    flex-flow: column wrap;
+                            
+                        }
+                          
+                        .flex-item {
+                            margin: 5px;
+                            text-align: left;
+                            justify-content: center;
+                            font-size: 16px;
+                            -webkit-box-flex: 2;
+                            -ms-flex-positive: 2;
+                                flex-grow: 1;
+                        }
+
+                        .flex-partner-name {
+                            margin: 5px;
+                            text-align: center;
+                            justify-content: center;
+                            font-size: 16px;
+                            -webkit-box-flex: 2;
+                            -ms-flex-positive: 2;
+                                flex-grow: 1;
+                        }
+
+                        .flex-item-amount-in-words {
+
+                            margin: 5px;
+                            text-align: left;
+                            justify-content: center;
+                            font-size: 16px;
+                            -webkit-box-flex: 2;
+                            -ms-flex-positive: 2;
+                                flex-grow: 1;
+                        }
+
+                        .flex-item-account-title {
+
+                            margin: 5px;
+                            text-align: left;
+                            justify-content: center;
+                            font-size: 16px;
+                            -webkit-box-flex: 2;
+                            -ms-flex-positive: 2;
+                                flex-grow: 1;
+                        }
+
+                        .flex-item-bank-check {
+
+                            margin: 5px;
+                            text-align: left;
+                            justify-content: center;
+                            font-size: 16px;
+                            -webkit-box-flex: 2;
+                            -ms-flex-positive: 2;
+                                flex-grow: 1;
+                        }
+
+                        .table-head{
+                            text-align: left;
+                            font-size: 16px;
+                            
+                        }
+
+                        th{
+                            align-content: left;
+                          }
+
+                        span{
+                            text-align: left;
+                        }
+
+                        p.normal {
+                            font-weight: normal;
+                          }
+                          
+                        p.thick {
+                        font-weight: bold;
+                        }
+
+                        label.thick {
+                            font-weight: bold;
+                            }
+                        
+                        p.thicker {
+                        font-weight: 900;
+                        }
+
+                    </style>
+
+                    <t t-set="payee" t-value="doc.payment_id.partner_id.name"/>
+                    <t t-set="voucher_no" t-value="doc.voucher_id_seq"/>
+                    <t t-set="date" t-value="doc.date" />
+
+                    <div class='flex-container'>
+                        <div>
+                            <img t-attf-src="data:image/*;base64,{{docs.company_id.logo}}" t-att-alt="docs.company_id.name" />
+                        </div>
+                        <div style="text-align: center; align-content: center;">
+                            <h1>
+                                <t t-esc="docs.company_id.name"/>
+                            </h1>
+                        </div>
+                        <div>
+                        </div>
+                    </div>
+
+                    <div class='flex-container'>
+                        <div class='flex-header'>
+                            <h1>Check Voucher</h1>
+                        </div>
+                    </div>
+                    <div class='flex-container'>
+                        <div class='flex-item'>
+                            <label for="payee" class='thick'>Payee:</label>
+                            <t t-esc="payee"/>
+                        </div>
+                        <div class='flex-header'>
+                            <div class='flex-item'>
+                                <label for="voucher_no" class='thick'>No.:</label>
+                                <t t-esc="voucher_no"/>
+                                <br/>
+                                <label for="date" class='thick'>Date:</label>
+                                <t t-esc="date"/>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class='flex-container-particulars'>
+                        <div class='flex-item'>
+                            <table width="100%" align="center">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            <p class="table-head">Particulars</p>
+                                        </th>
+                                        <th>
+                                            <p class="table-head">Description</p>
+                                        </th>
+                                        <th>
+                                            <p class="table-head">Amount</p>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-set="i" t-value="1"/>
+                                    <tr t-foreach="docs.invoice_ids" t-as="l">
+                                        <td style="white-space: nowrap;">
+                                            <span t-esc="l.invoice_id.number"/>
+                                        </td>
+                                        <td style="white-space: nowrap;">
+                                            <span t-esc="l.description"/>
+                                        </td>
+                                        <td style="white-space: nowrap;">
+                                            <span t-esc="l.currency_id.symbol"/>
+                                            <span t-esc="l.amount"/>
+                                        </td>
+                                        <t t-set="i" t-value="i+1"/>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class='flex-container-amount-bank-check'>
+                        <div class='flex-item-amount-in-words'>
+                            <label for="docs.amount_in_words" class='thick'>Amount in Words:</label>
+                            <t t-esc="docs.amount_in_words"/>
+                        </div>
+                        <br/>
+                        <div class='flex-item-bank-check'>
+                            <label for="docs.bank" class='thick'>Bank:</label>
+                            <t t-esc="docs.bank"/>
+                            <br/>
+                            <label for="docs.check_no_id" class='thick'>Check No.:</label>
+                            <t t-esc="docs.check_no_id"/>
+                        </div>
+                    </div>
+
+                    <div class='flex-container-account-title'>
+                        <div>
+                            <table width="100%" align="left">
+                                <thead>
+                                    <tr>
+                                        <th width="45%">
+                                            <p class="table-head">Account Title</p>
+                                        </th>
+                                        <th>
+                                            <p class="table-head">Debit</p>
+                                        </th>
+                                        <th>
+                                            <p class="table-head">Credit</p>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-set="i" t-value="1"/>
+                                    <tr t-foreach="docs.account_ids" t-as="l">
+                                        <td>
+
+                                            <span t-esc="l.account_title.code" class="oe_inline"/>
+                                            <span t-esc="l.account_title.name" class="oe_inline"/>
+
+                                        </td>
+                                        <td style="white-space: nowrap">
+                                            <p>
+
+                                                <t t-esc="l.debit_amount" class="oe_inline"/>
+                                            </p>
+                                        </td>
+                                        <td style="white-space: nowrap">
+                                            <p>
+
+                                                <t t-esc="l.credit_amount" class="oe_inline"/>
+                                            </p>
+                                        </td>
+
+                                        <t t-set="i" t-value="i+1"/>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+
+                    <div class='flex-container-prepared'>
+                        <div>
+                            <br/>
+                            <br/>
+                            <t t-esc='docs.drafted_by_id.name'/>
+                            <br/>
+                            <span>
+                                <t t-if="docs.drafted_by_id.name != False">
+                                    <t t-esc="docs.create_date.strftime('%m-%d-%Y %H:%M')"/>
+                                </t>
+                            </span>
+                            <br/>
+                            <span>_______________</span>
+                            <p class='thick'>Submitted By</p>
+
+                        </div>
+                        <div>
+                            <br/>
+                            <br/>
+                            <t t-esc='docs.verified_by_id.name'/>
+                            <br/>
+                            <span>
+                                <t t-if="docs.drafted_by_id.name != False">
+                                    <t t-esc="docs.date_verified.strftime('%m-%d-%Y %H:%M')"/>
+                                </t>
+
+                                <t t-else="">
+                                    <p></p>
+                                </t>
+                            </span>
+                            <br/>
+                            <span>_______________</span>
+                            <p class='thick'>Verified By</p>
+
+                        </div>
+                        <div>
+                            <br/>
+                            <br/>
+                            <t t-esc="docs.approved_by_id.name"/>
+                            <br/>
+                            <span>
+                                <t t-if="docs.approved_by_id.name != False">
+                                    <t t-esc="docs.date_approved.strftime('%m-%d-%Y %H:%M')"/>
+                                </t>
+                                <t t-else="">
+                                    <p></p>
+                                </t>
+                            </span>
+                            <br/>
+                            <span>_______________</span>
+                            <p class='thick'>Approved By</p>
+                        </div>
+                    </div>
+                </t>
+            </t>
+
+        </template>
+    </data>
+
+</odoo>

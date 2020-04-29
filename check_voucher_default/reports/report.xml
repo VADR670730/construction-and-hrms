@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <report
+        id="check_voucher_report" 
+        model="check.voucher" 
+        string="Check Voucher"
+        report_type="qweb-pdf"
+        name="check_voucher_default.report_check_voucher" 
+        file="base.report_report_check_voucher"
+        menu="False"
+    />
+
+
+    <report
+        id="check_voucher_report_v2" 
+        model="check.voucher" 
+        string="Check Voucher V2"
+        report_type="qweb-pdf"
+        name="check_voucher_default.report_check_voucher_v2" 
+        file="base.report_report_check_voucher_v2"
+        menu="False"
+    />
+</odoo>

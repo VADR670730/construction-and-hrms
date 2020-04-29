@@ -1,0 +1,41 @@
+# -*- coding: utf-8 -*-
+
+{
+    'author':  'Dennis Boy Silva',
+    'website': 'www.agilis.com.ph',
+    'license': 'AGPL-3',
+    'version': '12.0.0',
+    'category': 'Project',
+    'name': "Basic Construction Project Suite",
+    'summary': 'Construction Project Management customized module',
+    'description': '''
+        Construction Project Management''',
+    'data': [],
+    'depends': [
+            'account',
+            'purchase',
+            'purchase_requisition',
+            'stock',
+            'stock_account',
+            'report_xlsx',
+            'web_kanban_graph',
+            'purchase_order_line_menu',
+            'purchase_request',
+            'construction_project_management_base',
+            'construction_budget',
+            'construction_boq_and_material_management',
+            'construction_visual_inspection',
+            'construction_progress_billing',
+            'construction_kanban_graph',
+            'construction_purchase',
+            'project_report_xls',
+            'dhx_gantt',
+            'project_milestone',
+            'project_task_default_stage',
+            # 'project_template',
+        ],
+    'installable': True,
+    'auto_install': False,
+    'application': True,
+
+}

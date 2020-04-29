@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+  <data>
+
+    <!-- Inherit Form view -->
+    <record id="invoice_supplier_form" model="ir.ui.view">
+      <field name="name">account.invoice.form</field>
+      <field name="model">account.invoice</field>
+      <field name="inherit_id" ref="account.invoice_supplier_form"/>
+      <field name="arch" type="xml">
+        <field name="origin" position="after">
+          <field name="project_related"/>
+        </field>
+        <xpath expr="//field[@name='invoice_line_ids']/tree/field[@name='account_analytic_id']"
+          position="after">
+          <field name="project_id" invisible="1"/>
+          <field name="phase_id" attrs="{'column_invisible': [('parent.project_related', 'in', [False])]}"/>
+          <field name="task_id" attrs="{'column_invisible': [('parent.project_related', 'in', [False])], 'required': [('phase_id', 'not in', [False])]}"/>
+          <field name="project_boq_category" attrs="{'column_invisible': [('parent.project_related', 'in', [False])], 'required': [('phase_id', 'not in', [False])]}"/>
+        </xpath>
+      </field>
+    </record>
+
+  </data>
+</odoo>
