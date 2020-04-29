@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Tree view for "Candidate Assessment" -->
+    <record id="view_hr_assessment_tree" model="ir.ui.view">
+        <field name="name">Candidate Assessment Tree</field>
+        <field name="model">hr.assessment</field>
+        <field name="type">tree</field>
+        <field name="mode">primary</field>
+        <field name="priority" eval="16" />
+        <field name="active" eval="True" />
+        <field name="arch" type="xml">
+            <tree string="model_tree" create="true" delete="true" edit="true">
+                <field name="name"/>
+                <field name="test_type"/>
+                <field name="assessment_date"/>
+                <field name="number_of_items"/>
+                <field name="correct_items"/>
+                <field name="result"/>
+                <field name="checked_by_id"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Form view for "Candidate Assessment" -->
+    <record id="view_hr_assessment_form" model="ir.ui.view">
+        <field name="name">Candidate Assessment Form</field>
+        <field name="model">hr.assessment</field>
+        <field name="type">form</field>
+        <field name="mode">primary</field>
+        <field name="priority" eval="16" />
+        <field name="active" eval="True" />
+        <field name="arch" type="xml">
+            <form string="model_form" create="true" delete="true" edit="true">
+                <header>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name" class="oe_edit_only" />
+                        <h1>
+                            <field name="name" class="oe_inline" placeholder="Test Name" />
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <h2>Test Details</h2>
+                            <field name="applicant_name"/>
+                            <field name="job_id"/>
+                            <field name="test_type"/>
+                            <field name="website" widget="url"/>
+                            <field name="assessment_date"/>
+                        </group>
+                        <group>
+                            <h2>Result</h2>
+                            <field name="number_of_items"/>
+                            <field name="correct_items"/>
+                            <field name="result"/>
+                            <field name="checked_by_id"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+
+
+    <!-- Main window action for "Candidate Assessment" -->
+    <record id="action_hr_assessment_act_window" model="ir.actions.act_window">
+        <field name="type">ir.actions.act_window</field>
+        <field name="name">Candidate Assessment</field>
+        <field name="res_model">hr.assessment</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_type">form</field>
+        <field name="help" type="html">
+            <p class="oe_view_nocontent_create">
+            Add New Assessment
+            </p>
+        </field>
+    </record>
+
+    <!-- Menu Item for Candidate Assessment/To be discussed if enable or not -->
+    <!-- <menuitem
+        id="candidate_assessment_menu"
+        name="Assessment"
+        parent="hr_recruitment.menu_hr_recruitment_configuration"
+        action="action_hr_assessment_act_window"
+        sequence="11"
+    /> -->
+
+</odoo>

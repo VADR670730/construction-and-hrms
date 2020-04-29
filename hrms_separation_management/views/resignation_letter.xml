@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+  <data>
+
+    <record id="HRMSResignationLetter_view_form" model="ir.ui.view">
+      <field name="name">HRMSResignationLetter.form</field>
+      <field name="model">hr.resignation.letter</field>
+      <field name="arch" type="xml">
+        <form string="Resignation Letter">
+          <header>
+            <button name="submit" string="SUBMIT"
+                    class="oe_highlight" states="draft" type="object"/>
+            <button name="confirm" string="CONFIRM"
+                    class="oe_highlight" states="submit" type="object"/>
+            <button name="approved" string="APPROVE"
+                    class="oe_highlight" states="confirm" type="object"/>
+            <field name="state" widget="statusbar"/>
+          </header>
+          <sheet>
+            <group name="resignation_letter">
+              <group name="name_reason">
+                <field name="name"
+                  attrs="{'readonly': [('state', 'not in', ('draft'))]}"/>
+                <field name="reason"
+                  attrs="{'readonly': [('state', 'not in', ('draft'))]}"/>
+              </group>
+              <group name="relived_date">
+                <field name="resignation_date"
+                  attrs="{'readonly': [('state', 'not in', ('draft'))]}"/>
+                <field name="effective_date"
+                  attrs="{'readonly': [('state', 'not in', ('draft'))],
+                          'invisible': [('state', 'not in', ('confirm','approve'))] }"/>
+                <field name="relieved_date"
+                  attrs="{'readonly': [('state', 'not in', ('draft'))],
+                          'invisible': [('state', '!=', 'approve')] }"/>
+              </group>
+              <field name="separation_parent_id"/>
+            </group>
+            <field name="letter"
+              attrs="{'readonly': [('state', 'not in', ('draft'))]}"/>
+            <br/>
+            <group name="information">
+              <group name='file_info'>
+                <field name="submitted_by"
+                  attrs="{'readonly': [('state', 'not in', ('draft'))],
+                          'invisible': [('submitted_by','=',False)]}"/>
+                <field name="confirm_by"
+                  attrs="{'readonly': [('state', 'not in', ('draft'))],
+                          'invisible': [('confirm_by','=',False)]}"/>
+                <field name="approved_by"
+                  attrs="{'readonly': [('state', 'not in', ('draft'))],
+                          'invisible': [('approved_by','=',False)]}"/>
+              </group>
+              <group name='file_info_date'>
+                <field name="date_submitted"
+                  attrs="{'readonly': [('state', 'not in', ('draft'))],
+                          'invisible': [('date_submitted','=',False)]}"/>
+                <field name="date_confirm"
+                  attrs="{'readonly': [('state', 'not in', ('draft'))],
+                          'invisible': [('date_confirm','=',False)]}"/>
+                <field name="date_approved"
+                  attrs="{'readonly': [('state', 'not in', ('draft'))],
+                          'invisible': [('date_approved','=',False)]}"/>
+              </group>
+            </group>
+          </sheet>
+        </form>
+      </field>
+    </record>
+
+    <record id="HRMSResignationLetter_view_tree" model="ir.ui.view">
+      <field name="name">HRMSResignationLetter.tree</field>
+      <field name="model">hr.resignation.letter</field>
+      <field name="arch" type="xml">
+        <tree string="Resignation Letter">
+          <field name="name"/>
+          <field name="reason"/>
+          <field name="relieved_date"/>
+          <field name="date_submitted"/>
+          <field name="state"/>
+        </tree>
+      </field>
+    </record>
+
+    <record id="HRMSResignationLetter_action_form" model="ir.actions.act_window">
+      <field name="name">Resignation Letter</field>
+      <field name="res_model">hr.resignation.letter</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+
+    <record id="HRMSResignationReason_view_form" model="ir.ui.view">
+      <field name="name">HRMSResignationReason.form</field>
+      <field name="model">hr.resignation.reason</field>
+      <field name="arch" type="xml">
+        <form string="Resignation Reason">
+          <sheet>
+            <group>
+              <field name="name"/>
+            </group>
+          </sheet>
+        </form>
+      </field>
+    </record>
+
+    <record id="HRMSResignationReason_view_tree" model="ir.ui.view">
+      <field name="name">HRMSResignationReason.tree</field>
+      <field name="model">hr.resignation.reason</field>
+      <field name="arch" type="xml">
+        <tree string="Resignation Reason">
+          <field name="name"/>
+        </tree>
+      </field>
+    </record>
+
+    <record id="HRMSResignationReason_action_form" model="ir.actions.act_window">
+      <field name="name">Resignation Reason</field>
+      <field name="res_model">hr.resignation.reason</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+  </data>
+</odoo>

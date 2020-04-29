@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+  <record id="view_hr_payslip_by_employees" model="ir.ui.view">
+    <field name="name">hr_payroll_payslip_employees</field>
+    <field name="model">hr.payslip.employees</field>
+    <field name="inherit_id" ref="hr_payroll.view_hr_payslip_by_employees"/>
+    <field name="arch" type="xml">
+      <field name="employee_ids" position="before">
+        <group>
+          <field name="company_id" readonly="1" force-save="1"/>
+          <field name="cutoff_template_id" readonly="1" force-save="1"/>
+          <field name="valid_employee_ids" widget="many2many_tags" invisible="1"/>
+        </group>
+      </field>
+      <field name="employee_ids" position="attributes">
+        <attribute name="domain">[('id', 'in', valid_employee_ids)]</attribute>
+      </field>
+    </field>
+  </record>
+
+</odoo>

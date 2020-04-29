@@ -1,0 +1,437 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data>
+
+    <!-- Inherit Form view -->
+    <record id="hr_undertime_request_view_form" model="ir.ui.view">
+      <field name="name">hr.undertime.request.form</field>
+      <field name="model">hr.undertime.request</field>
+      <field name="inherit_id" ref="hrms_undertime_request.hr_undertime_request_view_form"/>
+      <field name="arch" type="xml">
+        <field name="total_hours" position="after">
+          <field name="actual_ut" widget="float_time" readonly="1" force_save="1"/>
+          <field name="time_difference" widget="float_time" invisible="1"/>
+        </field>
+      </field>
+    </record>
+
+    <menuitem id="menu_hr_attendance_summary" name="Attendance Summary" parent="hr_attendance.menu_hr_attendance_manage_attendances" sequence="70"/>
+
+    <record id="hr_attendance_summary_line_view_form" model="ir.ui.view">
+      <field name="name">hr.attendance.summary.line.form</field>
+      <field name="model">hr.attendance.summary.line</field>
+      <field name="arch" type="xml">
+        <form string="Employee Attendance Summary" create="false" delete="false" edit="false">
+          <header>
+            <button name="compute_attendance" string="Compute Attendance"
+              class="oe_highlight" type="object"/>
+            <button name="generate_report" string="Print"
+              class="oe_highlight" type="object"/>
+          </header>
+          <sheet>
+            <div class="oe_title">
+              <h1>
+                <field name="employee_id" placeholder="Employee Name"/>
+              </h1>
+              <div name="options_active">
+                <div>
+                  <label for="department_id" class="oe_inline" string="Position"/>
+                  <field name="department_id" class="oe_inline oe_input_align"/>
+                </div>
+                <div>
+                  <label for="job_id" class="oe_inline" string="Department"/>
+                  <field name="job_id" class="oe_inline oe_input_align"/>
+                </div>
+								<div>
+									<label for="contract_id" class="oe_inline" string="Contract"/>
+									<field name="contract_id" class="oe_inline oe_input_align" readonly="1" force_save="1"/>
+								</div>
+              </div>
+            </div>
+            <group>
+              <group name="range" string="Cutoff Range">
+                <div colspan="2">
+                  <field name="date_from" placeholder="Time Start" class="oe_inline"/>-
+                  <field name="date_to" placeholder="Time End" class="oe_inline"/>
+                </div>
+              </group>
+              <group>
+                <field name="company_id"/>
+              </group>
+            </group>
+            <notebook>
+              <page name="attendance_summary" string="Attendance Summary">
+                <div class="row">
+                  <div class="card bg-light col-sm-3">
+                    <div class="card-header">Work Schedule</div>
+                    <div class="card-body">
+                      <div>
+                        <label for="work_schedule_id" class="oe_inline"/>
+                        <field name="work_schedule_id" class="oe_inline oe_input_align card-text"/>
+                      </div>
+                      <div>
+                        <label for="shifting_schedule_ids" class="oe_inline"/>
+                        <field name="shifting_schedule_ids" widget="many2many_tags"  class="oe_inline oe_input_align card-text"/>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="card bg-light col-sm-3">
+                    <div class="card-header">Workdays</div>
+                    <div class="card-body">
+                      <div>
+                        <label for="total_worked_days" class="oe_inline"/>
+                        <field name="total_worked_days" class="oe_inline oe_input_align card-text"/>
+                      </div>
+                      <div>
+                        <label for="total_worked_hours" string="total Worked Hours"  class="oe_inline"/>
+                        <field name="total_worked_hours" widget="float_time" help="Regular Hours Only" class="oe_inline oe_input_align card-text"/>
+                      </div>
+                      <div>
+                        <label for="total_nightdifferential_hours" string="Total Night Differential Hours" class="oe_inline"/>
+                        <field name="total_nightdifferential_hours" widget="float_time" class="oe_inline oe_input_align card-text"/>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="card bg-light col-sm-3">
+                    <div class="card-header">Absenteeism and Tardiness</div>
+                    <div class="card-body">
+                      <div>
+                        <label for="total_absent" string="Absents" class="oe_inline"/>
+                        <field name="total_absent" class="oe_inline oe_input_align card-text"/>
+                      </div>
+                      <div>
+                        <label for="total_unpaid_leaves" string="Unpaid Leaves" class="oe_inline"/>
+                        <field name="total_unpaid_leaves" class="oe_inline oe_input_align card-text"/>
+                      </div>
+                      <div>
+                        <label for="total_late" string="Total Lates" class="oe_inline"/>
+                        <field name="total_late" string="Total Lates" widget="float_time" class="oe_inline oe_input_align card-text"/>
+                      </div>
+                      <div>
+                        <label for="total_late_count" string="Total Late Counts" class="oe_inline"/>
+                        <field name="total_late_count" class="oe_inline oe_input_align card-text"/>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="card bg-light col-sm-3">
+                    <div class="card-header">Undertime</div>
+                    <div class="card-body">
+                      <div>
+                        <label for="total_unfiled_ut" string="Unfiled Hours" class="oe_inline"/>
+                        <field name="total_unfiled_ut" string="Unfiled Hours" widget="float_time" class="oe_inline oe_input_align card-text"/>
+                      </div>
+                      <div>
+                        <label for="total_ut_difference" string="Dif. from Filed Hours" class="oe_inline"/>
+                        <field name="total_ut_difference" widget="float_time" class="oe_inline oe_input_align card-text"/>
+                      </div>
+                      <div>
+                        <label for="total_ut_unauthorized" string="Total Unauthorized Hours" class="oe_inline"/>
+                        <field name="total_ut_unauthorized" widget="float_time" class="oe_inline oe_input_align card-text"/>
+                      </div>
+                      <div>
+                        <label for="total_undertime" string="Total Undertime" class="oe_inline"/>
+                        <field name="total_undertime" widget="float_time" class="oe_inline oe_input_align card-text"/>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <field name="summary_line_ids" colspan="2">
+                  <tree string="Summary Details" editable="top" create="false" delete="false">
+                    <field name="dayofweek"/>
+                    <field name="date"/>
+                    <field name="schedule_start" invisible="1"/>
+                    <field name="schedule_end" invisible="1"/>
+                    <field name="schedule"/>
+                    <field name="attendance"/>
+                    <!-- <field name="offical_bussines"/> -->
+                    <field name="night_differential" widget="float_time"/>
+                    <field name="early_in" widget="float_time"/>
+                    <field name="late" widget="float_time"/>
+                    <field name="undertime" widget="float_time"/>
+                    <field name="overtime_line_ids" widget="many2many_tags"/>
+                    <!-- <field name="overtime" widget="float_time"/> -->
+                    <field name="regular_wrk_hour" widget="float_time"/>
+                    <field name="total_wrk_hour" widget="float_time"/>
+                    <field name="absent"/>
+                    <field name="leave"/>
+                    <field name="leave_ids" widget="many2many_tags"/>
+                    <field name="holiday_ids" widget="many2many_tags"/>
+                  </tree>
+                </field>
+              </page>
+              <page name="Undertime" string="Logs">
+                <group string="Overtime Request">
+                  <field name="overtime_ids" nolabel="1" colspan="2" readonly="1" force_save="1">
+                    <tree string="Overtime Logs" editable="top">
+                      <field name="description" readonly="1"/>
+                      <field name="start_date" readonly="1"/>
+                      <field name="end_date" readonly="1"/>
+                      <field name="work_type_id" readonly="1"/>
+                      <field name="code" readonly="1" invisible="1"/>
+                      <field name="hours" string="Approved Hours" widget="float_time" readonly="1"/>
+                      <field name="rendered_hours" string="Rendered Hours" widget="float_time" readonly="1"/>
+                      <field name="state" readonly="1" invisible="1"/>
+                    </tree>
+                  </field>
+                </group>
+                <group string="Undertime Request">
+                  <field name="undertime_ids" nolabel="1" colspan="2" readonly="1" force_save="1">
+                    <tree string="Undertime">
+                      <field name="name"/>
+                      <field name="ut_start" string="Time"/>
+                      <field name="total_hours" string="Requested Hours" widget="float_time"/>
+                      <field name="actual_ut" widget="float_time"/>
+                      <field name="time_difference" widget="float_time"/>
+                      <field name="ut_purpose"/>
+                      <field name="state"/>
+                    </tree>
+                  </field>
+                </group>
+                <group string="Official Business">
+                  <field name="offical_bussines_ids" nolabel="1" colspan="2" readonly="1" force_save="1">
+                    <tree string="Official Business">
+                      <field name="name"/>
+                      <field name="date_start"/>
+                      <field name="date_end"/>
+                      <field name="state"/>
+                    </tree>
+                  </field>
+                </group>
+                <group string="Leave">
+                  <field name="leave_ids" nolabel="1" colspan="2" readonly="1" force_save="1">
+                    <tree string="Leave">
+                      <field name="name"/>
+                      <field name="holiday_status_id"/>
+                      <field name="request_date_from"/>
+                      <field name="request_date_to"/>
+                      <field name="number_of_days_display" string="Duration in Days"/>
+                      <field name="state" invisible="1"/>
+                    </tree>
+                  </field>
+                </group>
+              </page>
+            </notebook>
+          </sheet>
+        </form>
+      </field>
+    </record>
+
+    <record id="hr_attendance_summary_line_view_pivot" model="ir.ui.view">
+      <field name="name">hr.attendance.summary.line.pivot</field>
+      <field name="model">hr.attendance.summary.line</field>
+      <field name="arch" type="xml">
+        <pivot string="Attendance Summary Analysis">
+          <field name="attendance_summary_id" type="row"/>
+          <field name="employee_id" type="row"/>
+          <field name="date_from" type="col"/>
+          <field name="total_worked_days" type="measure"/>
+          <field name="total_worked_hours" widget="float_time" type="measure"/>
+          <field name="total_nightdifferential_hours" widget="float_time" type="measure"/>
+          <field name="total_absent" type="measure"/>
+          <field name="total_late" widget="float_time" type="measure"/>
+          <field name="total_late_count" type="measure"/>
+          <field name="total_unfiled_ut" widget="float_time" type="measure"/>
+          <field name="total_ut_difference" widget="float_time" type="measure"/>
+          <field name="total_ut_unauthorized" widget="float_time" type="measure"/>
+        </pivot>
+      </field>
+    </record>
+
+    <record id="hr_attendance_summary_line_view_tree" model="ir.ui.view">
+      <field name="name">hr.attendance.summary.line.tree</field>
+      <field name="model">hr.attendance.summary.line</field>
+      <field name="arch" type="xml">
+        <tree string="Summary" create="false" delete="false" edit="false">
+          <field name="attendance_summary_id" string="Reference"/>
+          <field name="employee_id"/>
+          <field name="contract_id"/>
+          <field name="department_id"/>
+          <field name="job_id"/>
+        </tree>
+      </field>
+    </record>
+
+    <record id="hr_attendance_summary_view_form" model="ir.ui.view">
+      <field name="name">hr.attendance.summary.form</field>
+      <field name="model">hr.attendance.summary</field>
+      <field name="arch" type="xml">
+        <form string="Attendance Summary">
+          <header>
+            <button name="%(action_create_employee_attendance)d" context="{'default_summary_id': active_id}"
+              string="Create Employee Attendance Summary"
+	            class="oe_highlight" states="draft" type="action"/>
+            <button name="compute_attendance" string="Compute Attendance Summary"
+	            class="oe_highlight" icon="fa-terminal" states="draft" type="object"/>
+						<button name="submit_request" string="Submit"
+	            class="oe_highlight" states="draft" type="object"/>
+	          <button name="confirm_request" string="Confirm"
+	            class="oe_highlight" states="submitted" type="object"/>
+	          <button name="verify_request" string="Verify"
+							class="oe_highlight" states="confirmed" type="object"/>
+	          <button name="approve_request" string="Approve"
+							class="oe_highlight" states="verified" type="object"/>
+	          <button name="cancel_request" string="Cancel"
+							class="oe_highlight" states="submitted,confirmed,verified" type="object"/>
+	          <button name="reset_to_draft_request"
+							string="Reset to Draft" class="oe_highlight" states="canceled" type="object"/>
+	          <field name="state" widget="statusbar" statusbar_visible="draft,approved" statusbar_colors="{'draft':'green'}"/>
+          </header>
+          <sheet>
+            <div class="oe_title">
+              <h1>
+                <field name="name" placeholder="Employee Name"/>
+              </h1>
+              <div name="options_active">
+                <div>
+                  <label for="company_id" class="oe_inline" string="Company :"/>
+                  <field name="company_id" class="oe_inline oe_input_align"/>
+                </div>
+              </div>
+            </div>
+            <group>
+              <group>
+                <field name="month_year" placeholder="mm/YYYY"/>
+                <field name="cutoff_type" invisible="1"/>
+                <label for="date_start" string="Period"/>
+                <div>
+                  <field name="cutoff_template_id" options="{'no_create': True}" class="oe_inline"/>
+                  <field name="cutoff" attrs="{'invisible': [('cutoff_type', 'in', ['monthly'])], 'required': [('cutoff_type', 'in', ['bi-monthly'])]}" class="oe_inline"/>
+                </div>
+              </group>
+              <group name="range" string="Cutoff Range">
+                <div colspan="2">
+                  <field name="date_from" placeholder="Time Start" class="oe_inline"/>-
+                  <field name="date_to" placeholder="Time End" class="oe_inline"/>
+                </div>
+              </group>
+            </group>
+            <label for="line_ids" colspan="2" string="Employee Attendance Summary"/>
+            <field name="line_ids" colspan="2">
+              <tree string="Summary">
+                <field name="employee_id"/>
+                <field name="contract_id"/>
+                <field name="department_id"/>
+                <field name="job_id"/>
+                <!-- <field name="state" invisible="1"/> -->
+              </tree>
+            </field>
+            <newline/>
+            <group>
+	            <group>
+	              <label for="submitted_by" states="submitted,confirmed,verified,approved"/>
+	              <div states="submitted,confirmed,verified,approved">
+	                <field name="submitted_by" class="oe_inline"/>
+	                <field name="submitted_date" class="oe_inline"/>
+	              </div>
+	              <label for="confirmed_by" states="confirmed,verified,approved"/>
+	              <div states="confirmed,verified,approved">
+	                <field name="confirmed_by" class="oe_inline"/>
+	                <field name="confirmed_date" class="oe_inline"/>
+	              </div>
+	              <label for="verified_by" states="verified,approved"/>
+	              <div states="verified,approved">
+	                <field name="verified_by" class="oe_inline"/>
+	                <field name="verified_date" class="oe_inline"/>
+	              </div>
+	            </group>
+	            <group>
+	              <label for="approved_by" states="approved"/>
+	              <div states="approved">
+	                <field name="approved_by" class="oe_inline"/>
+	                <field name="approved_date" class="oe_inline"/>
+	              </div>
+	              <label for="canceled_by" states="canceled"/>
+	              <div states="canceled">
+	                <field name="canceled_by" class="oe_inline"/>
+	                <field name="canceled_date" class="oe_inline"/>
+	              </div>
+	            </group>
+	          </group>
+          </sheet>
+          <div class="oe_chatter">
+            <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+            <field name="activity_ids" widget="mail_activity"/>
+            <field name="message_ids" widget="mail_thread"/>
+          </div>
+        </form>
+      </field>
+    </record>
+
+    <record id="hr_attendance_summary_view_tree" model="ir.ui.view">
+      <field name="name">hr.attendance.summary.tree</field>
+      <field name="model">hr.attendance.summary</field>
+      <field name="arch" type="xml">
+        <tree string="Attendance Summary">
+          <field name="name"/>
+          <field name="company_id"/>
+          <field name="date_from"/>
+          <field name="date_to"/>
+          <field name="state"/>
+        </tree>
+      </field>
+    </record>
+
+    <record id="hr_attendance_summary_action_form" model="ir.actions.act_window">
+      <field name="name">Batch Attendance Summary</field>
+      <field name="res_model">hr.attendance.summary</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="menu_hr_batch_attendance_summary" action="hr_attendance_summary_action_form" parent="menu_hr_attendance_summary" sequence="1"/>
+
+    <record id="hr_attendance_summary_line_action_form" model="ir.actions.act_window">
+      <field name="name">Employee Attendance Summary</field>
+      <field name="res_model">hr.attendance.summary.line</field>
+      <field name="view_mode">tree,pivot,form</field>
+    </record>
+
+    <menuitem id="menu_hr_employee_attendance_summary" action="hr_attendance_summary_line_action_form" parent="menu_hr_attendance_summary" sequence="2"/>
+
+    <record id="hr_attendance_view_pivot" model="ir.ui.view">
+        <field name="name">hr.attendance.pivot</field>
+        <field name="model">hr.attendance</field>
+        <field name="inherit_id" ref="hr_attendance.hr_attendance_view_pivot"/>
+        <field name="arch" type="xml">
+          <field name="worked_hours" position="attributes">
+            <attribute name="widget">float_time</attribute>
+          </field>
+        </field>
+    </record>
+
+    <record id="hr_attendance_computed_summary_view_pivot" model="ir.ui.view">
+      <field name="name">hr.attendance.computed.summary.pivot</field>
+      <field name="model">hr.attendance.computed.summary</field>
+      <field name="arch" type="xml">
+        <pivot string="Attendance Summary Analysis">
+          <field name="employee_id" type="row"/>
+          <field name="department_id" type="row"/>
+          <field name="date" type="col"/>
+          <field name="night_differential" widget="float_time" type="measure"/>
+          <field name="early_in" widget="float_time" type="measure"/>
+          <field name="late" widget="float_time" type="measure"/>
+          <field name="undertime" widget="float_time" type="measure"/>
+          <field name="regular_wrk_hour" widget="float_time" type="measure"/>
+          <field name="total_wrk_hour" widget="float_time" type="measure"/>
+          <field name="absent" type="measure"/>
+          <field name="leave" type="measure"/>
+        </pivot>
+      </field>
+    </record>
+
+    <menuitem id="hr_attendance.menu_hr_attendance_report" name="Reporting" parent="hr_attendance.menu_hr_attendance_root" sequence="30" groups="hr_attendance.group_hr_attendance_user"/>
+    <menuitem id="menu_hr_attendance_analysis" name="Attendance Analysis" parent="hr_attendance.menu_hr_attendance_report" sequence="1" groups="hr_attendance.group_hr_attendance_user" action="hr_attendance.hr_attendance_action_graph"/>
+    <!-- <menuitem id="menu_hr_timekeeping_analysis" name="Processed Timekeeping Analysis" parent="hr_attendance.menu_hr_attendance_report" sequence="2" groups="hr_attendance.group_hr_attendance_user"/> -->
+
+    <record id="hr_attendance_computed_summary_pivot_view" model="ir.actions.act_window">
+        <field name="name">Processed Attendance Analysis</field>
+        <field name="res_model">hr.attendance.computed.summary</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">pivot</field>
+    </record>
+
+    <menuitem id="menu_hr_attendance_report" parent="hr_attendance.menu_hr_attendance_report" sequence="2" groups="hr_attendance.group_hr_attendance_user" action="hr_attendance_computed_summary_pivot_view"/>
+
+
+
+  </data>
+</odoo>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <!-- Sequences for voucher number -->
+        <record id="seq_project_iterations" model="ir.sequence">
+            <field name="name">Voucher Number Sequence</field>
+            <field name="code">voucher.number.sequence</field>
+            <field name="prefix">VN</field>
+            <field name="padding">5</field>
+        </record>
+    </data>
+</odoo>

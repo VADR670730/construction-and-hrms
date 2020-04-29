@@ -1,0 +1,9 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_hrms_compliance_infraction,access.hr_infraction,model_hr_infraction,,1,1,1,1
+access_hrms_compliance_policy,access.hr_policy,model_hr_company_policy,,1,1,1,1
+access_hrms_compliance_offense,access.hr_offense,model_hr_company_offense,,1,1,1,1
+access_hrms_compliance_offense_code_frequency,access.hr_offense_code_frequency,model_hr_company_offense_frequency,,1,1,1,1
+access_hrms_compliance_violation,access.hr_violation,model_hr_company_violation,,1,1,1,1
+access_hrms_compliance_violation_policy_offense, access.hr_violation_policy_offense,model_hr_company_violation_policy_offense,,1,1,1,1
+access_hrms_compliance_action_history, access.hr_infraction_action_history,model_hr_infraction_action_history,,1,1,1,1
+access_hrms_compliance_suspension_history, access.hr_suspension_history,model_suspension_history,,1,1,1,1

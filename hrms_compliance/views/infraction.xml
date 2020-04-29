@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data>
+    <!-- Inherit Form view -->
+    <record id="inherit_employee_for_infractions" model="ir.ui.view">
+      <field name="name">hr.employee.form</field>
+      <field name="model">hr.employee</field>
+      <field name="inherit_id" ref="hrms_employee_201.inherit_employee_form_view"/>
+      <field name="arch" type="xml">
+        <xpath expr="//page[@name='contract_history']" position="before">
+          <page string="Infractions">
+            <group string="Infractions">
+              <field name="infraction_ids" nolabel="1">
+                <field name="infraction_sequence_id" string="Case ID"/>
+                <field name="department_id" string="Department"/>
+                <field name="violation_id" string="Violation"/>
+                <field name="violation_date" string="Date Committed"/>
+              </field>
+            </group>
+          </page>
+        </xpath>
+      </field>
+    </record>
+
+    <record model="ir.ui.view" id="hrms_compliance_infraction_list">
+      <field name="name">HRV3 Infraction List</field>
+      <field name="model">hr.infraction</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="infraction_sequence_id"/>
+          <field name="emp_id" string="Name"/>
+          <field name="violation_id"/>
+          <field name="policy_violated_ids" invisible="1" />
+          <field name="parent_infraction_id"/>
+          <field name="state"/>
+          <field name="violation_date"/>
+          <field name="history_ids"/>
+        </tree>
+      </field>
+    </record>
+
+    <record model="ir.ui.view" id="hrms_compliance_infraction_form">
+      <field name="name">HRV3 Infraction Form</field>
+      <field name="model">hr.infraction</field>
+      <field name="arch" type="xml">
+        <form>
+          <header>
+            <button string="Submit" type="object" name="set_state_inprogress" class="oe_highlight" attrs="{'invisible':[('state','not in','draft')]}"/>
+            <button string="For Closure" type="object" name="set_state_forclosure" class="oe_highlight" attrs="{'invisible':[('state','not in','in_progress')]}"/>
+            <button string="Close" type="object" name="set_state_closed" class="oe_highlight" attrs="{'invisible':[('state','not in','for_closure')]}"/>
+            <field name="state" widget="statusbar" statusbar_visible="draft,in_progress,for_closure,closed"/>
+          </header>
+          <sheet>
+            <div class="oe_title">
+              <h1>
+                <field name="infraction_sequence_id" readonly="1" force_save="1"/>
+              </h1>
+            </div>
+            <group>
+              <group string="Employee Details">
+                <field name="emp_id" string="Name" attrs="{'readonly': [('state','not in',['draft'])]}" options="{'no_create': True, 'no_create_edit': True}"/>
+                <field name="job_id" string="Job Description" readonly="1"/>
+                <field name="manager_id"/>
+                <field name="parent_infraction_id" 
+                  options="{'no_create': True, 'no_open': True, 'no_create_edit': True}" 
+                  attrs="{'readonly': [('state','not in','draft')]}"
+                  domain="[('emp_id', '=', emp_id),('state','not in',['draft'])]"
+                  />
+                <field name="is_parent" invisible="1" />
+                <field name="is_child" invisible="1" />
+              </group>
+
+              <group string="Violation Details">
+                <field name="violation_id" attrs="{'readonly': [('state','not in',['draft'])]}"/>
+                <field name="policy_violated_ids" invisible="1" />
+                <field name="policy_violated_id" attrs="{'readonly': [('state','not in',['draft'])]}" string="Policy Violated" options="{'no_create': True, 'no_open': True, 'no_create_edit': True}" />
+                <field name="offense_code_id"/>
+                <field name="frequency" />
+                <field name="violation_date" attrs="{'readonly': [('state','not in',['draft'])]}"/>
+                <field name="corrective_action" invisible="1"/>
+                <div class="col-xs-4">
+                </div>
+                <div class="col-xs-4">
+                  <button type="object" string="History" name="get_offense_history" icon="fa-clock-o" class="oe_inline oe_link"/>
+                </div>
+              </group>
+            </group>
+            <group>
+              <field name="violation_details" attrs="{'readonly': [('state','not in',['draft'])]}"/>
+            </group>
+            <group>
+              <notebook>
+                <page string="Action History">
+                  <field name="history_ids" attrs="{'readonly': [('state','in',['for_closure','closed'])]}" nolabel="1">
+                    <tree>
+                      <control>
+                        <create string="Add record" context="{'default_infraction_id': id,'default_emp_id':emp_id}" />
+                      </control>
+                      <field name="emp_id" invisible="1"/>
+                      <field name="infraction_id" invisible="1"/>
+                      <field name="stage"/>
+                      <field name="state"/>
+                      <field name="corrective_action"/>
+                      <field name="action_date"/>
+                      <field name="start_date" invisible="1" />
+                      <field name="end_date" invisible="1" />
+                      <field name="duration" invisible="1" />
+                      <field name="days_remaining" invisible="1" />
+                    </tree>
+                  </field>
+                </page>
+                <page string="Suspension History" attrs="{'invisible': [('suspension_history_ids','=',None)]}">
+                  <field name="suspension_history_ids" options="{'no_create': True, 'no_create_edit': True}" domain="[('infraction_id', '=', id)]" readonly="1">
+                    <tree delete="false">
+                      <field name="date_from" string="Start Date"/>
+                      <field name="date_to" string="End Date"/>
+                      <field name="duration"/>
+                      <field name="remaining_days"/>
+                      <field name="state"/>
+                    </tree>
+                  </field>
+                </page>
+              </notebook>
+            </group>
+          </sheet>
+          <div class="oe_chatter">
+            <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+            <field name="activity_ids" widget="mail_activity"/>
+            <field name="message_ids" widget="mail_thread"/>
+          </div>
+        </form>
+      </field>
+    </record>
+
+    <!-- actions opening views on models -->
+
+    <record model="ir.actions.act_window" id="hrms_compliance_infraction_action_window">
+      <field name="name">Infraction</field>
+      <field name="res_model">hr.infraction</field>
+      <field name="view_mode">tree,form</field>
+      <field name="view_type">form</field>
+    </record>
+  </data>
+</odoo>

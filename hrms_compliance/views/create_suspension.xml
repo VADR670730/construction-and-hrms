@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="create_suspension_form_wizard" model="ir.ui.view">
+            <field name="name">create.suspension.wizard</field>
+            <field name="model">create.suspension</field>
+            <field name="arch" type="xml">
+                <form string="Staggered Suspension ">
+                    <group>
+                        <group>
+                            <field name="emp_id" groups="base.group_no_one" readonly="1" />
+                            <field name="infraction_id" groups="base.group_no_one" readonly="1" />
+                            <field name="suspension_days" readonly="1"/>
+                            <field name="used_days" readonly="1"/>
+                            <field name="remaining_days" readonly="1" />
+                        </group>
+                        <group>
+                            <field name="use_suspension_days" readonly="1" />
+                            <field name="start_date"/>
+                            <field name="end_date"/>
+                        </group>
+                    </group>
+                    <group string="History">
+                        <field name="history_ids" nolabel="1" readonly="1">
+                            <tree>
+                                <field name="used_days" readonly="1" />
+                                <field name="date_from" readonly="1"/>
+                                <field name="date_to" readonly="1"/>
+                                <field name="duration" readonly="1"/>
+                                <field name="state" readonly="1"/>
+                            </tree>
+                        </field>
+
+                    </group>
+                    <footer>
+                        <button name="create_suspension" string="Submit" type="object" class="btn-primary"/>
+                        <button string="Cancel" class="btn-secondary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="create_suspension" model="ir.actions.act_window">
+            <field name="name">Staggered Suspension</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">create.suspension</field>
+            <field name="view_mode">form,tree</field>
+            <field name="view_id" ref="create_suspension_form"/>
+            <field name="target">new</field>
+        </record>
+    </data>
+</odoo>

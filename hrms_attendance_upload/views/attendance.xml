@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data>
+
+    <menuitem id="hr_attendance.menu_hr_attendance_view_attendances" name="Attendances" parent="hr_attendance.menu_hr_attendance_manage_attendances" sequence="16" groups="hr_attendance.group_hr_attendance_user"/>
+    <menuitem id="menu_hr_attendance_view_attendance_records" name="Attendance Records" parent="hr_attendance.menu_hr_attendance_view_attendances" sequence="1" groups="hr_attendance.group_hr_attendance_user" action="hr_attendance.hr_attendance_action"/>
+
+    <!-- Inherit Form view -->
+    <record id="view_employee_form_inherit_hr_attendance" model="ir.ui.view">
+      <field name="name">hr.employee.form</field>
+      <field name="model">hr.employee</field>
+      <field name="inherit_id" ref="hr_attendance.view_employee_form_inherit_hr_attendance"/>
+      <field name="arch" type="xml">
+        <field name="barcode" position="after">
+          <field name="biometric"/>
+        </field>
+      </field>
+    </record>
+
+    <record id="attendance_sorting_view_tree" model="ir.ui.view">
+      <field name="name">attendance.sorting.tree</field>
+      <field name="model">attendance.sorting</field>
+      <field name="arch" type="xml">
+        <tree string="Attendance Sort" create="false" decoration-warning="invalid_data==True">
+          <field name="attendance_process_id" invisible="1"/>
+          <field name="employee_id"/>
+          <field name="attendance_time"/>
+          <field name="attendance_type"/>
+          <field name="invalid_data" invisible="1"/>
+        </tree>
+      </field>
+    </record>
+
+    <record id="attendance_sorting_view_form" model="ir.ui.view">
+      <field name="name">attendance.sorting.form</field>
+      <field name="model">attendance.sorting</field>
+      <field name="arch" type="xml">
+        <form string="Attendance Sort" create="false">
+          <sheet>
+            <div class="oe_title">
+              <h1>
+                <field name="employee_id" readonly="1"/>
+              </h1>
+              <div name="options_active">
+                <div>
+                  <label for="attendance_type" class="oe_inline"/>
+                  <field name="attendance_type" class="oe_inline oe_input_align"/>
+                </div>
+                <div>
+                  <label for="attendance_time" class="oe_inline"/>
+                  <field name="attendance_time" class="oe_inline oe_input_align"/>
+                </div>
+              </div>
+            </div>
+          </sheet>
+        </form>
+      </field>
+    </record>
+
+    <record id="attendance_sorting_action_form" model="ir.actions.act_window">
+      <field name="name">Attendance Sorting</field>
+      <field name="res_model">attendance.sorting</field>
+      <field name="view_mode">tree,form</field>
+      <field name="domain">[('attendance_process_id', '=', active_id)]</field>
+    </record>
+
+    <record id="hr_employee_attendance_action_form" model="ir.actions.act_window">
+      <field name="name">Employee Attendance Records</field>
+      <field name="res_model">hr.attendance</field>
+      <field name="view_mode">tree,form</field>
+      <field name="domain">[('attendance_process_id', '=', active_id)]</field>
+    </record>
+
+    <record id="process_attendance_view_form" model="ir.ui.view">
+      <field name="name">process.attendance.form</field>
+      <field name="model">process.attendance</field>
+      <field name="arch" type="xml">
+        <form string="Attendance Process">
+          <header>
+            <button name="process_attendance_file" string="Process Attendance" icon="fa-gears" class="oe_highlight" states="draft" type="object"/>
+            <button name="push_sorted_attendance" string="Check and Attendance" icon="fa-save" class="oe_highlight" states="sorting" type="object"/>
+            <field name="state" widget="statusbar" statusbar_visible="draft,done"/>
+          </header>
+          <sheet>
+            <div class="oe_button_box" name="button_box">
+              <button name="%(attendance_sorting_action_form)d" class="oe_stat_button" icon="fa-sort-alpha-asc" type="action" states="sorting" groups="hr.group_hr_manager">
+                <field name="data_count" widget="statinfo" string="Data for Sorting"/>
+              </button>
+              <button name="%(hr_employee_attendance_action_form)d" class="oe_stat_button" icon="fa-users" type="action" states="done" groups="hr.group_hr_manager">
+                <field name="employee_attendance_count" widget="statinfo" string="Attendance Record"/>
+              </button>
+            </div>
+            <div class="oe_title">
+              <h1>
+                <field name="name" placeholder="Title"/>
+              </h1>
+              <div name="options_active">
+                <div>
+                  <label for="process_date" class="oe_inline"/>
+                  <field name="process_date" class="oe_inline oe_input_align"/>
+                </div>
+              </div>
+            </div>
+            <div class="card border-danger" name="error_records" attrs="{'invisible': [('error_msg', '=', False)]}">
+              <div class="card-header text-danger">
+                Need Attentions
+              </div>
+              <div class="card-body">
+                <field name="error_msg" class="card-text"/>
+                <button name="%(attendance_sorting_action_form)d" class="oe_stat_button" icon="fa-sort-alpha-asc" type="action" groups="hr.group_hr_manager">
+                  <field name="data_count" widget="statinfo" string="Data for Sorting"/>
+                </button>
+              </div>
+            </div>
+            <group>
+              <group name="attendance_file">
+                <field name="attendance_file_ids" nolabel="1" colspan="2">
+                  <tree string="Attendance File" editable="top">
+                    <field name="file" widget="binary" filename="filename"/>
+                    <field name="filename" invisible="1"/>
+                    <field name="date_uploaded"/>
+                  </tree>
+                </field>
+              </group>
+              <div class="card border-success mb-6">
+                <div class="card-header">CSV File Format</div>
+                <div class="card-body text-success">
+                  <h5 class="card-title">Required CSV Columns And Data Format</h5>
+                  <p class="card-text"><strong>ID</strong>: <em>(Integer)</em> Record Id in the Biometric Attendance Table</p>
+        					<p class="card-text"><strong>Biometric</strong>: <em>(String)</em> Employee Biometrics ID</p>
+        					<p class="card-text"><strong>Attendance Time</strong>: <em>(MM/DD/YYYY HH:MM:SS)</em> Attendance Datetime</p>
+        					<p class="card-text"><strong>Action</strong>: <em>(String)</em> Either <strong><em>sign_in</em></strong> or <strong><em>sign_out</em></strong></p>
+                </div>
+              </div>
+            </group>
+          </sheet>
+          <div class="oe_chatter">
+            <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+            <field name="activity_ids" widget="mail_activity"/>
+            <field name="message_ids" widget="mail_thread"/>
+          </div>
+        </form>
+      </field>
+    </record>
+
+    <record id="process_attendance_view_tree" model="ir.ui.view">
+      <field name="name">process.attendance.tree</field>
+      <field name="model">process.attendance</field>
+      <field name="arch" type="xml">
+        <tree string="Attendance Process">
+          <field name="name"/>
+          <field name="process_date"/>
+          <field name="attendance_file_ids"/>
+          <field name="state"/>
+        </tree>
+      </field>
+    </record>
+
+    <record id="process_attendance_action_form" model="ir.actions.act_window">
+      <field name="name">Upload Attendance File from Biometrics</field>
+      <field name="res_model">process.attendance</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="menu_hr_process_attendance_action" name="Upload Attendance" parent="hr_attendance.menu_hr_attendance_view_attendances" sequence="2"
+      groups="hr_attendance.group_hr_attendance_manager" action="process_attendance_action_form"/>
+
+
+
+
+
+  </data>
+</odoo>

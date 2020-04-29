@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+  <record id="res_config_settings_form_view" model="ir.ui.view">
+    <field name="name">res.config.settings.timekeeping.form</field>
+    <field name="model">res.config.settings</field>
+    <field name="inherit_id" ref="hr_attendance.res_config_settings_view_form"/>
+    <field name="priority" eval="80"/>
+    <field name="arch" type="xml">
+      <xpath expr="//div[@data-key='hr_attendance']" position="attributes">
+          <attribute name="string">Timekeeping</attribute>
+      </xpath>
+      <xpath expr="//div[@data-key='hr_attendance']" position="inside">
+        <h2>Attendance Rule</h2>
+        <div class="row mt16 o_settings_container" name="attendance_rule">
+          <div class="col-12 col-lg-6 o_setting_box">
+            <div class="o_setting_right_pane">
+              <label for="minimum_overtime_file"/>
+              <div class="content-group">
+                <div class="row mt16">
+                  <label for="minimum_overtime_file" class="col-lg-1 o_light_label" string=""/>
+                  <field name="minimum_overtime_file" widget="float_time" class="oe_inline"/>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-12 col-lg-6 o_setting_box">
+            <!-- <div class="o_setting_left_pane">
+              <field name="reminder_user_allow"/>
+            </div> -->
+            <div class="o_setting_right_pane">
+              <label for="nightdiff_hour_start" string="Night Differential"/>
+              <div class="content-group">
+                  <div class="row mt16">
+                      <label for="nightdiff_hour_start" class="col-lg-2 o_light_label" string="From"/>
+                      <field name="nightdiff_hour_start" widget="float_time" class="oe_inline"/> To
+                      <field name="nightdiff_hour_end" widget="float_time" class="oe_inline"/>
+                  </div>
+              </div>
+            </div>
+          </div>
+          <!-- <div class="col-12 col-lg-6 o_setting_box">
+            <div class="o_setting_right_pane">
+              <label for="overtime_rounding"/>
+              <div class="content-group">
+                <div class="row mt16">
+                  <label for="overtime_rounding" class="col-lg-1 o_light_label" string=""/>
+                  <field name="overtime_rounding" widget="float_time" class="oe_inline"/>
+                </div>
+              </div>
+            </div>
+          </div> -->
+          <div class="col-12 col-lg-6 o_setting_box">
+            <div class="o_setting_left_pane">
+              <field name="regular_working_hours"/>
+            </div>
+            <div class="o_setting_right_pane">
+              <label for="regular_working_hours"/>
+            </div>
+          </div>
+        </div>
+      </xpath>
+    </field>
+  </record>
+
+
+  <menuitem id="menu_hr_attendance_overtime" name="Overtime and Holiday Works" parent="hr_attendance.menu_hr_attendance_root"/>
+
+
+</odoo>

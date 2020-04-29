@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+  <data>
+
+    <record id="HRMSEmployeeMovement_view_form" model="ir.ui.view">
+      <field name="name">HRMSEmployeeMovement.form</field>
+      <field name="model">hr.employee.movement</field>
+      <field name="arch" type="xml">
+        <form string="Employee Movement">
+          <header>
+            <button name="submit" string="SUBMIT"
+                    class="oe_highlight" states="draft" type="object"/>
+            <button name="confirm" string="CONFIRM"
+                    class="oe_highlight" states="for_reviewing" type="object"/>
+            <button name="approve" string="APPROVE"
+                    class="oe_highlight" states="review" type="object"/>
+            <field name="state" widget="statusbar"
+              statusbar_visible="draft,review,approve"/>
+          </header>
+          <sheet>
+            <group name='employee_movement' string="Employee Name">
+              <h1><field name="name"
+                attrs="{'readonly': [('state', 'not in', ('draft'))]}"
+                style="width:50%"/></h1>
+            </group>
+            <group name='department_position'>
+              <field name="department_id"
+                attrs="{'readonly': [('state', 'not in', ('draft'))]}"
+                style="width:30%"/>
+              <field name="job_id"
+                attrs="{'readonly': [('state', 'not in', ('draft'))]}"
+                style="width:30%"/>
+            </group>
+            <group name="movement_details" string="Movement Details">
+              <group name='movement_type_date'>
+                <field name="movement_type"
+                  attrs="{'readonly': [('state', 'not in', ('draft'))]}"/>
+                <field name="movement_date"
+                  attrs="{'readonly': [('state', 'not in', ('draft'))]}"/>
+              </group>
+              <group name="start_end">
+                <field name="new_job_id" domain="[('id','!=',job_id)]"
+                  attrs="{'readonly': [('state', 'not in', ('draft'))], 'invisible': [('movement_type', 'not in', ('promition','demotion'))], 'required': [('movement_type', 'in', ('promition','demotion'))]}"/>
+                <field name="new_department_id"
+                  domain="[('id','!=',department_id)]"
+                  attrs="{'readonly': [('state', 'not in', ('draft'))],'invisible': [('movement_type', '!=', 'lateral')],'required': [('movement_type', '=', 'lateral')]}"/>
+                <field name="new_contract"
+                  attrs="{'readonly': [('state', 'not in', ('draft'))],'invisible': [('new_contract', '=', False)]}"/>
+                <field name="contract" widget="radio" attrs="{'invisible': [('movement_type', '!=', 'lateral')],'required': [('movement_type', '=', 'lateral')]}"/>
+              </group>
+            </group>
+            <group string="Contract History">
+              <field name="contract_history_ids" nolabel="1">
+                <tree>
+                  <field name="name" string="Contract Reference"/>
+                  <field name="job_id" string="Job Position"/>
+                  <field name="department_id" string="Department"/>
+                  <field name="date_created" string="Created On"/>
+                  <field name="date_start" string="Date Start"/>
+                  <field name="date_end" string="Date End"/>
+                  <field name="state" string="Status"/>
+                  <field name="reason_changing" string="Reason for Changing"/>
+                </tree>
+              </field>
+            </group><br/>
+            <group name="information">
+              <group name='file_info'>
+                <field name="submitted_by"
+                  attrs="{'readonly': [('state', 'not in', ('draft'))],
+                          'invisible': [('submitted_by','=',False)]}"/>
+                <field name="review_by"
+                  attrs="{'readonly': [('state', 'not in', ('draft'))],
+                          'invisible': [('review_by','=',False)]}"/>
+                <field name="approved_by"
+                  attrs="{'readonly': [('state', 'not in', ('draft'))],
+                          'invisible': [('approved_by','=',False)]}"/>
+              </group>
+              <group name='file_info_date'>
+                <field name="date_submitted"
+                  attrs="{'readonly': [('state', 'not in', ('draft'))],
+                          'invisible': [('date_submitted','=',False)]}"/>
+                <field name="date_review"
+                  attrs="{'readonly': [('state', 'not in', ('draft'))],
+                          'invisible': [('date_review','=',False)]}"/>
+                <field name="date_approved"
+                  attrs="{'readonly': [('state', 'not in', ('draft'))],
+                          'invisible': [('date_approved','=',False)]}"/>
+              </group>
+            </group>
+          </sheet>
+        </form>
+      </field>
+    </record>
+
+    <record id="HRMSEmployeeMovement_view_tree" model="ir.ui.view">
+      <field name="name">HRMSEmployeeMovement.tree</field>
+      <field name="model">hr.employee.movement</field>
+      <field name="arch" type="xml">
+        <tree string="Employee Movement">
+          <field name="name"/>
+          <field name="movement_type"/>
+          <field name="movement_date"/>
+          <field name="state"/>
+        </tree>
+      </field>
+    </record>
+
+    <record id="HRMSEmployeeMovement_action_form" model="ir.actions.act_window">
+      <field name="name">Employee Movement</field>
+      <field name="res_model">hr.employee.movement</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem name="Employee Movement" id="hrms_employee_movement_root" sequence="1"
+              web_icon="hrms_employee_movement,static/description/jennie.png"/>
+
+    <menuitem name="Employee Movement" id="menu_item_employee_movement"
+              parent="hrms_employee_movement_root"
+              action="HRMSEmployeeMovement_action_form"
+              sequence="1"/>
+
+  </data>
+</odoo>

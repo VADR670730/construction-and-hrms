@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data>
+
+    <record id="action_check_voucher_form" model="ir.actions.act_window">
+      <field name="name">Check Voucher</field>
+      <field name="type">ir.actions.act_window</field>
+      <field name="res_model">check.voucher</field>
+      <field name="view_type">form</field>
+      <field name="view_mode">form</field>
+    </record>
+
+
+    <record id="action_check_voucher" model="ir.actions.act_window">
+      <field name="name">Check Voucher</field>
+      <field name="type">ir.actions.act_window</field>
+      <field name="res_model">check.voucher</field>
+      <field name="view_type">form</field>
+      <field name="view_mode">tree,form</field>
+      <field name="help" type="html">
+        <p class="o_view_nocontent_smiling_face">
+              Create your First Check Voucher
+        </p>
+      </field>
+    </record>
+    <!-- explicit list view definition -->
+
+    <!-- Check Voucher Tree View -->
+    <record model="ir.ui.view" id="check_voucher_tree">
+      <field name="name">check.voucher.tree</field>
+      <field name="model">check.voucher</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="partner_id"/>
+          <field name="voucher_id_seq"/>
+          <field name="date"/>
+
+        </tree>
+      </field>
+    </record>
+
+    <record id="view_account_payment_form_view_form" model="ir.ui.view">
+      <field name="name">account.payment.view.form</field>
+      <field name="model">account.payment</field>
+      <field name="inherit_id" ref="account.view_account_payment_form"/>
+      <field name="arch" type="xml">
+        <button name="post" position="before">
+          <button name="%(action_check_voucher_form)d" class="oe_highlight" states='draft' string="Create Check Voucher" type="action" context="{'default_payment_id': active_id, 'default_partner_id': partner_id, 'default_bank_id': journal_id}" attrs="{'invisible': ['|','|','|',('journal_type','not in',['bank']), ('check_voucher_id','!=',False),
+                                             ('state','not in',['draft'])]}"/>
+
+        </button>
+        <field name="payment_transaction_id" position='after'>
+          <field name="check_voucher_id" attrs="{'invisible': [('check_voucher_id','=',False)]}" force_save="1" readonly="1"/>
+          <field name="journal_type" invisible="1"/>
+          <field name="voucher_state"/>
+        </field>
+        <xpath expr="//button[@name='post']" position="attributes">
+          <attribute name="attrs">{'invisible':['|','|',('check_voucher_id','=',False),
+                                                        ('voucher_state','not in',['approved','canceled'])]}</attribute>
+        </xpath>
+      </field>
+    </record>
+
+
+    <!-- Check Voucher Form View -->
+    <record model="ir.ui.view" id="check_voucher_form">
+      <field name="name">check.voucher.form</field>
+      <field name="model">check.voucher</field>
+      <field name="arch" type="xml">
+        <form string="Check Voucher Form" name="check_voucher_form">
+          <header>
+            <button name="submit_voucher" string="Submit" class="oe_highlight" states="draft" type="object"/>
+            <button name="confirm_voucher" string="Confirm" class="oe_highlight" states="submitted" type="object"/>
+            <button name="verify_voucher" string="Verify" class="oe_highlight" states="confirmed" type="object"/>
+            <button name="approve_voucher" string="Approve" class="oe_highlight" states="verified" type="object"/>
+            <button name="cancel_voucher" string="Cancel" class="oe_highlight" states="submitted,confirmed,verified" type="object"/>
+            <field name="state" widget="statusbar" statusbar_visible="draft,submitted,confirmed,verified,approved,canceled"/>
+          </header>
+          <sheet>
+            <group>
+              <group>
+                <div class="oe-title">
+                  <label for="payment_id" />
+                  <h1>
+                    <field name="payment_id" attrs="{'readonly': ['!',('state','in',['draft'])]}" />
+                  </h1>
+                  <label for="partner_id" />
+                  <h2>
+                    <field name="partner_id" force_save="1" readonly="1" attrs="{'readonly': ['!',('state','in',['draft'])]}"/>
+                  </h2>
+                  <!-- <field name="_get_bank_name" invisible="1"/>  -->
+                  <label for="partner_bank_id" />
+                  <h3>
+                    <field name="partner_bank_id"/>
+                  </h3>
+                  <!-- <h3>
+                    <field name="partner_bank_account_name" attrs="{'invisible':[('partner_bank_account_id', '=' ,'False')]}" />
+                  </h3> -->
+                  <label for="partner_bank_account_id"/>
+                  <h3>
+                    <field name="partner_bank_account_id"/>
+                  </h3>
+
+                </div>
+              </group>
+              <group>
+                <field name="voucher_id_seq"/>
+                <field name="date" attrs="{'readonly': ['!',('state','in',['draft'])]}"/>
+                <field name="account_payment_id" invisible="1"/>
+              </group>
+            </group>
+
+            <field name="invoice_ids" context="{'default_check_voucher_id': active_id, 'default_partner_id': partner_id}" nolabel="1" colspan="2" attrs="{'readonly': ['!',('state','in',['draft'])]}"/>
+            <group>
+              <field name="description" string="Description" attrs="{'readonly': ['!',('state','in',['draft'])]}"/>
+            </group>
+            <group>
+
+              <br/>
+              <group>
+                <field name="account_ids" nolabel="1" colspan="2" attrs="{'readonly': ['!',('state','in',['draft'])]}"/>
+              </group>
+              <group>
+                <field name="currency_id" invisible="1"/>
+                <field name="total_amount" widget='monetary' options="{'currency_field': 'currency_id'}" readonly="True"/>
+                <field name="amount_in_words" force_save="1" readonly="1"/>
+                <field name="bank_id" attrs="{'readonly': ['!',('state','in',['draft'])]}"/>
+                <field name="bank_account_no"/>
+                <field name="check_no_id" attrs="{'readonly': ['!',('state','in',['draft'])]}"/>
+              </group>
+            </group>
+
+
+            <!-- Prepared, Certified, Approved Section -->
+            <group name="users">
+              <group>
+                <field name="drafted_by_id" force_save="1" readonly="1"/>
+                <field name="create_date" string="Date Prepared"/>
+              </group>
+              <group>
+                <field name="submitted_by_id" states="submitted,confirmed,verified,approved,canceled"/>
+                <field name="date_submitted" states="submitted,confirmed,verified,approved,canceled"/>
+              </group>
+              <group>
+                <field name="confirmed_by_id" attrs="{'invisible': [('state','in',['draft','submitted'])]}"/>
+                <field name="date_confirmed" attrs="{'invisible': [('state','in',['draft','submitted'])]}"/>
+              </group>
+              <group>
+                <field name="verified_by_id" attrs="{'invisible': [('state','in',['draft','submitted','confirmed'])]}"/>
+                <field name="date_verified" attrs="{'invisible': [('state','in',['draft','submitted','confirmed'])]}"/>
+              </group>
+              <group>
+                <field name="approved_by_id" attrs="{'invisible': [('state','in',['draft','submitted','confirmed','verified','canceled'])]}"/>
+                <field name="date_approved" attrs="{'invisible': [('state','in',['draft','submitted','confirmed','verified','canceled'])]}"/>
+              </group>
+              <group>
+                <field name="canceled_by_id" attrs="{'invisible': [('state','not in',['canceled'])]}"/>
+                <field name="date_canceled" attrs="{'invisible': [('state','not in',['canceled'])]}"/>
+              </group>
+            </group>
+          </sheet>
+          <div class="oe_chatter">
+            <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+            <field name="activity_ids" widget="mail_activity"/>
+            <field name="message_ids" widget="mail_thread"/>
+          </div>
+        </form>
+      </field>
+    </record>
+
+
+
+
+
+    <menuitem action="action_check_voucher" id="menu_action_account_check_voucher" parent="account.menu_action_account_payments_payable" sequence="2"/>
+    <menuitem id="menu_action_account_payments_payable" parent="account.menu_finance_payables" sequence="20"/>
+    <menuitem action="account.action_account_payments_payable" id="menu_action_account_payments_payable2" parent="account.menu_action_account_payments_payable" sequence="1"/>
+
+  </data>
+</odoo>

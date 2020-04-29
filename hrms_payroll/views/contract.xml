@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+  <!-- Inherit Form view -->
+
+  <record id="hr_contract_form_inherit" model="ir.ui.view">
+    <field name="name">hr.contract.form</field>
+    <field name="model">hr.contract</field>
+    <field name="inherit_id" ref="hr_payroll.hr_contract_form_inherit"/>
+    <field name="arch" type="xml">
+      <field name="schedule_pay" position="replace"/>
+    </field>
+  </record>
+
+  <record id="hr_contract_view_form" model="ir.ui.view">
+    <field name="name">hr.contract.form</field>
+    <field name="model">hr.contract</field>
+    <field name="inherit_id" ref="hr_contract.hr_contract_view_form"/>
+    <field name="arch" type="xml">
+      <field name="resource_calendar_id" position="replace"/>
+      <group name="duration_group" position="after">
+        <group name="schedules" string="Schedules">
+          <field name="resource_calendar_id"/>
+          <field name="cutoff_template_id" required="1"/>
+          <field name="wage_type"/>
+          <field name="schedule_pay" invisible="1"/>
+        </group>
+      </group>
+    </field>
+  </record>
+
+  <record id="payroll_cutoff_template_view_tree" model="ir.ui.view">
+    <field name="name">payroll.cutoff.template.tree</field>
+    <field name="model">payroll.cutoff.template</field>
+    <field name="arch" type="xml">
+      <tree string="Cutoff Template">
+        <field name="name"/>
+        <field name="cutoff_type"/>
+        <field name="wtax_type"/>
+      </tree>
+    </field>
+  </record>
+
+  <record id="payroll_cutoff_template_view_form" model="ir.ui.view">
+    <field name="name">payroll.cutoff.template.form</field>
+    <field name="model">payroll.cutoff.template</field>
+    <field name="arch" type="xml">
+      <form string="Cutoff Template">
+        <sheet>
+          <div class="oe_title">
+            <h1>
+              <field name="name" placeholder="Title" required="1"/>
+            </h1>
+            <div name="options_active">
+              <div>
+                <label for="cutoff_type" class="oe_inline"/>
+                <field name="cutoff_type" class="oe_inline oe_input_align" required="1"/>
+              </div>
+              <div invisible="1">
+                <label for="wtax_type" class="oe_inline"/>
+                <field name="wtax_type" class="oe_inline oe_input_align" required="1"/>
+              </div>
+              <div attrs="{'invisible': [('cutoff_type', 'not in', ['monthly'])]}">
+                <label for="monthly_date" string="Every" class="oe_inline"/>
+                <field name="monthly_date" class="oe_inline oe_input_align" attrs="{'required': [('cutoff_type', 'in', ['monthly'])]}"/>
+                <label for="monthly_every_end" class="oe_inline" string="th of the month"/>
+                <!-- <field name="monthly_every_end" class="oe_inline oe_input_align" required="1"/> -->
+              </div>
+              <div attrs="{'invisible': [('cutoff_type', 'not in', ['bi-monthly'])]}">
+                <label for="bimonthly_first_date" string="Every" class="oe_inline"/>
+                <field name="bimonthly_first_date" class="oe_inline oe_input_align" attrs="{'required': [('cutoff_type', 'in', ['bi-monthly'])]}"/>
+                <label for="bimonthly_date" string="th, And Every" class="oe_inline"/>
+                <field name="bimonthly_date" class="oe_inline oe_input_align" attrs="{'required': [('cutoff_type', 'in', ['bi-monthly'])]}"/>
+                <label for="bimonthly_every_end" class="oe_inline" string="th of the month"/>
+                <!-- <field name="bimonthly_every_end" class="oe_inline oe_input_align" required="1"/> -->
+              </div>
+              <div attrs="{'invisible': [('cutoff_type', 'not in', ['weekly'])]}">
+                <label for="day_of_week" string="Every" class="oe_inline"/>
+                <field name="day_of_week" class="oe_inline oe_input_align" attrs="{'required': [('cutoff_type', 'in', ['weekly'])]}"/>of Week
+              </div>
+            </div>
+          </div>
+        </sheet>
+      </form>
+    </field>
+  </record>
+
+  <record id="payroll_cutoff_template_action_form" model="ir.actions.act_window">
+    <field name="name">Cutoff Template</field>
+    <field name="res_model">payroll.cutoff.template</field>
+    <field name="view_mode">tree,form</field>
+  </record>
+
+  <menuitem id="menu_config_payroll_cutoff_template" action="payroll_cutoff_template_action_form" parent="hr_payroll.menu_hr_payroll_configuration" sequence="10"/>
+
+</odoo>

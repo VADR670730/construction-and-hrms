@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+  <record id="hr_salary_rule_form" model="ir.ui.view">
+    <field name="name">hr.salary.rule.form</field>
+    <field name="model">hr.salary.rule</field>
+    <field name="inherit_id" ref="hr_payroll.hr_salary_rule_form"/>
+    <field name="arch" type="xml">
+      <field name="company_id" position="after">
+        <field name="can_exclude"/>
+      </field>
+    </field>
+  </record>
+
+  <record id="hr_contract_view_form" model="ir.ui.view">
+    <field name="name">hr.contract.form</field>
+    <field name="model">hr.contract</field>
+    <field name="inherit_id" ref="hrms_cutoff_template.hr_contract_view_form"/>
+    <field name="arch" type="xml">
+      <field name="wage_type" position="after">
+        <field name="salary_rule_template_id"/>
+      </field>
+    </field>
+  </record>
+
+  <record id="hr_salary_rule_template_view_form" model="ir.ui.view">
+    <field name="name">hr.salary.rule.template.form</field>
+    <field name="model">hr.salary.rule.template</field>
+    <field name="arch" type="xml">
+      <form string="Salary Rule Template">
+        <sheet>
+          <div class="oe_title">
+            <h1>
+              <field name="name" placeholder="Title" required="1"/>
+            </h1>
+            <div name="options_active">
+              <div>
+                <label for="salary_structure_id" class="oe_inline"/>
+                <field name="salary_structure_id" class="oe_inline oe_input_align" options="{'no_create': True}"/>
+              </div>
+              <div>
+                <label for="cutoff_template_id" class="oe_inline"/>
+                <field name="cutoff_template_id" class="oe_inline oe_input_align" options="{'no_create': True}"/>
+              </div>
+            </div>
+          </div>
+          <field name="line_ids" colspan="2" nolabel="1" context="{'default_template_id': active_id}">
+            <tree string="Rules" editable="top">
+              <field name="template_id" invisible="1"/>
+              <field name="rule_id" options="{'no_create': True}"/>
+              <field name="include_on"/>
+              <field name="computation_code"/>
+            </tree>
+          </field>
+        </sheet>
+      </form>
+    </field>
+  </record>
+
+  <record id="hr_salary_rule_template_action_form" model="ir.actions.act_window">
+    <field name="name">Computation Include and Exclude Template</field>
+    <field name="res_model">hr.salary.rule.template</field>
+    <field name="view_mode">tree,form</field>
+  </record>
+
+  <menuitem id="menu_config_hr_salary_rule_template" action="hr_salary_rule_template_action_form" parent="hr_payroll.menu_hr_payroll_configuration" sequence="10"/>
+
+</odoo>

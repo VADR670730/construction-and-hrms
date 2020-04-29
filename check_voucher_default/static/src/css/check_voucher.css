@@ -1,0 +1,194 @@
+.flex-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-flow: row wrap;
+          flex-flow: row wrap;
+  border-style: solid solid none solid;
+  
+}
+
+.flex-container-particulars {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-flow: row wrap;
+          flex-flow: row wrap;
+  border-style: solid solid none solid;
+  
+}
+
+.flex-container-account-title {
+
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-flow: row wrap;
+          flex-flow: row wrap;
+  border-style: none solid solid solid;
+}
+
+.flex-container-amount-bank-check {
+
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-flow: row wrap;
+          flex-flow: row wrap;
+  border-style: solid;
+
+}
+
+.flex-container-prepared {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-flow: row wrap;
+          flex-flow: row wrap;
+  border-style: none solid solid solid;
+  
+}
+
+.flex-container-account-title > div{
+
+  margin: 5px;
+  text-align: left;
+  justify-content: center;
+  font-size: 16px;
+  -webkit-box-flex: 1;
+  -ms-flex-positive: 2;
+      flex-grow: 2;
+}
+
+.flex-container-prepared > div{
+
+  margin: 5px;
+  text-align: left;
+  justify-content: center;
+  font-size: 16px;
+  -webkit-box-flex: 1;
+  -ms-flex-positive: 2;
+      flex-grow: 2;
+}
+
+.flex-container > div{
+
+  margin: 5px;
+  text-align: left;
+  justify-content: center;
+  font-size: 16px;
+  -webkit-box-flex: 1;
+  -ms-flex-positive: 2;
+      flex-grow: 2;
+}
+
+
+.flex-header {
+  margin: 10px;
+  text-align: right;
+  font-size: 9px;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align:right;
+      -ms-flex-align:right;
+          align-items:right;
+  -webkit-box-flex: 2;
+      -ms-flex-positive: 2;
+          flex-grow: 2;
+  
+}
+
+.flex-container-vertical {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-flow: column wrap;
+          flex-flow: column wrap;
+  
+}
+
+.flex-item {
+  margin: 5px;
+  text-align: left;
+  justify-content: center;
+  font-size: 16px;
+  -webkit-box-flex: 2;
+  -ms-flex-positive: 2;
+      flex-grow: 1;
+}
+
+.flex-item-amount-in-words {
+
+  margin: 5px;
+  text-align: left;
+  justify-content: center;
+  font-size: 16px;
+  -webkit-box-flex: 2;
+  -ms-flex-positive: 2;
+      flex-grow: 1;
+}
+
+.flex-item-account-title {
+
+  margin: 5px;
+  text-align: left;
+  justify-content: center;
+  font-size: 16px;
+  -webkit-box-flex: 2;
+  -ms-flex-positive: 2;
+      flex-grow: 1;
+}
+
+.flex-item-bank-check {
+
+  margin: 5px;
+  text-align: left;
+  justify-content: center;
+  font-size: 16px;
+  -webkit-box-flex: 2;
+  -ms-flex-positive: 2;
+      flex-grow: 1;
+}
+
+.table-head{
+  text-align: left;
+  font-size: 16px;
+  
+}
+
+th{
+  align-content: left;
+}
+
+span{
+  text-align: left;
+}
+
+p.normal {
+  font-weight: normal;
+}
+
+p.thick {
+font-weight: bold;
+}
+
+label.thick {
+  font-weight: bold;
+  }
+
+p.thicker {
+font-weight: 900;
+}

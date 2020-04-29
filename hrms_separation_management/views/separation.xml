@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+  <data>
+
+    <!-- Inherit Form view -->
+    <record id="add_exit_employee_201" model="ir.ui.view">
+      <field name="name">hr.employee.form</field>
+      <field name="model">hr.employee</field>
+      <field name="inherit_id" ref="hr.view_employee_form"/>
+      <field name="arch" type="xml">
+        <page name="hr_settings" position="inside">
+          <group>
+            <group string="Employee Status">
+              <field name="on_hold"/>
+              <field name="date_started"/>
+              <field name="years_of_service"/>
+              <field name="status"/>
+              <field name="date_exited"
+                     attrs="{'invisible': [('status', '=', 'Active')]}"/>
+              <field name="exit_reason"
+                     attrs="{'invisible': [('status', '=', 'Active')]}"/>
+              <field name="separation_id" readonly="1"
+                     attrs="{'invisible': [('status', '=', 'Active')]}"/>
+            </group>
+          </group>
+        </page>
+      </field>
+    </record>
+
+    <record id="HR_Separation_view_form" model="ir.ui.view">
+      <field name="name">HR_Separation.form</field>
+      <field name="model">hr.separation</field>
+      <field name="arch" type="xml">
+        <form string="Separation">
+          <header>
+            <button name="submit" string="SUBMIT"
+                    class="oe_highlight" states="draft" type="object"/>
+            <button name="confirm" string="CONFIRM"
+                    class="oe_highlight" states="for_confirmation"
+                    type="object"/>
+            <button name="waiting_approve" string="APPROVE"
+                    class="oe_highlight" states="for_approval" type="object"/>
+            <button name="set_claim" string="SET CLAIM"
+                    class="oe_highlight" states="approve" type="object"/>
+            <field name="state" widget="statusbar"
+              statusbar_visible="draft,approve,claim"/>
+          </header>
+          <sheet>
+            <div class="oe_button_box" name="button_box">
+              <button name="generate_clearance" string="Generate Clearance"
+                type="object" class="oe_stat_button" icon="fa-list-alt"
+                attrs="{'invisible': ['|',('clearance','!=',False),
+                ('state', 'not in', 'approve')]}"/>
+              <button name="employee_clearance" string="Employee Clearance"
+                type="object" class="oe_stat_button" icon="fa-file-o"
+                attrs="{'invisible': [('clearance','=',False)]}"/>
+            </div>
+            <group name="employee_name" string="Employee Name">
+              <h1><field name="name"
+                attrs="{'readonly': [('state', 'not in', ('draft'))]}"
+                style="width:50%"/></h1>
+            </group>
+            <group name="separation">
+              <group name="Employee Info">
+                <field name="department_id" readonly="1"/>
+                <field name="job_id" readonly="1"/>
+                <field name="parent_id" readonly="1"/>
+                <field name="clearance" invisible="1"/>
+              </group>
+              <group name="separation_reason">
+                <field name="separation_type"
+                  attrs="{'readonly': [('state', 'not in', ('draft'))]}"/>
+                <field name="resignation_letter"
+                  domain="[('name','=',name),
+                           ('state','=','approve')]"
+                  attrs="{'readonly': [('state', 'not in', ('draft'))],
+                          'invisible': [('separation_type', '!=',
+                                                            'resignation')],
+                          'required': [('separation_type', '=',
+                                                          'resignation')]}"/>
+                <field name="reason"
+                  attrs="{'readonly': [('state', 'not in', ('draft'))]}"/>
+                <field name="date_raised" readonly="1"
+                  attrs="{'invisible': [('date_raised', '=', False)]}"/>
+                <field name="date_of_request" readonly="1"
+                  attrs="{'invisible': [('date_of_request', '=', False)]}"/>
+              </group>
+            </group>
+            <group name="date_joined_and_relieved">
+              <field name="joined"
+                attrs="{'readonly': [('state', 'not in', ('draft'))]}"
+                style="width:30%"/>
+              <field name="relieved"
+                  attrs="{'readonly': [('state', 'not in', ('draft'))]}"
+                  style="width:30%"/>
+            </group>
+            <group>
+              <group name="exit_interview" string="Exit Interview"
+                attrs="{'invisible': [('state', 'not in',
+                                      ('approve','claim'))]}">
+                <field name="iterview_form"
+                  attrs="{'readonly': [('state', '=', 'claim')]}"/>
+              </group>
+              <group name="document_checklist" string="Document Checklist"
+                attrs="{'invisible': [('state', 'not in',
+                                      ('approve','claim'))]}">
+                <field name="quit_claim"
+                  attrs="{'readonly': [('state', '=', 'claim')]}"/>
+                <field name="cert_of_employment"
+                  attrs="{'readonly': [('state', '=', 'claim')]}"/>
+                <field name="details"
+                  attrs="{'readonly': [('state', '=', 'claim')]}"/>
+                <field name="loan"
+                  attrs="{'readonly': [('state', '=', 'claim')]}"/>
+              </group>
+            </group>
+            <label for="note"/>
+              <field name="note"
+                attrs="{'readonly': [('state', 'not in', ('draft'))]}"/>
+            <br/>
+            <group name="information">
+              <group name='file_info'>
+                <field name="submitted_by"
+                  attrs="{'readonly': [('state', 'not in', ('draft'))],
+                          'invisible': [('submitted_by','=',False)]}"/>
+                <field name="confirm_by"
+                  attrs="{'readonly': [('state', 'not in', ('draft'))],
+                          'invisible': [('confirm_by','=',False)]}"/>
+                <field name="approved_by"
+                  attrs="{'readonly': [('state', 'not in', ('draft'))],
+                          'invisible': [('approved_by','=',False)]}"/>
+              </group>
+              <group name='file_info_date'>
+                <field name="date_submitted"
+                  attrs="{'readonly': [('state', 'not in', ('draft'))],
+                          'invisible': [('date_submitted','=',False)]}"/>
+                <field name="date_confirm"
+                  attrs="{'readonly': [('state', 'not in', ('draft'))],
+                          'invisible': [('date_confirm','=',False)]}"/>
+                <field name="date_approved"
+                  attrs="{'readonly': [('state', 'not in', ('draft'))],
+                          'invisible': [('date_approved','=',False)]}"/>
+              </group>
+            </group>
+          </sheet>
+        </form>
+      </field>
+    </record>
+
+    <record id="HR_Separation_view_tree" model="ir.ui.view">
+      <field name="name">HR_Separation.tree</field>
+      <field name="model">hr.separation</field>
+      <field name="arch" type="xml">
+        <tree string="Separation Request">
+          <field name="name"/>
+          <field name="relieved"/>
+          <field name="separation_type"/>
+          <field name="reason"/>
+          <field name="state"/>
+        </tree>
+      </field>
+    </record>
+
+    <record id="separation_management_graph_view" model="ir.ui.view">
+        <field name="name">separation_management.graph</field>
+        <field name="model">hr.separation</field>
+        <field name="priority">20</field>
+        <field name="arch" type="xml">
+            <graph string="Separation Request" type="pie">
+                <field name="name"/>
+                <field name="separation_type"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="separation_management_graph_view_action" model="ir.actions.act_window">
+      <field name="name">Separation Graph</field>
+      <field name="res_model">hr.separation</field>
+      <field name="view_mode">graph</field>
+    </record>
+
+    <record model="ir.actions.act_window" id="HR_Separation_action_form">
+      <field name="name">Separation Request</field>
+      <field name="res_model">hr.separation</field>
+      <field name="view_mode">tree,form,graph</field>
+      <field name="view_type">form</field>
+    </record>
+
+  </data>
+</odoo>

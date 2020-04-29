@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+  <menuitem id="hr_attendance.menu_hr_attendance_root" name="Time Keeping" sequence="90" groups="hr_attendance.group_hr_attendance" web_icon="hr_attendance,static/description/icon.png"/>
+  <menuitem id="hr_attendance.menu_hr_attendance_manage_attendances" name="Manage Time Keeping" parent="hr_attendance.menu_hr_attendance_root" sequence="20" groups="hr_attendance.group_hr_attendance_user"/>
+
+
+  <record id="shifting_schedule_view_tree" model="ir.ui.view">
+    <field name="name">shifting.schedule.tree</field>
+    <field name="model">shifting.schedule</field>
+    <field name="arch" type="xml">
+      <tree string="Shifting Schedule">
+        <field name="name"/>
+        <field name="date" string="Filed Date"/>
+        <field name="company_id" groups="base.group_multi_company"/>
+        <field name="employee_schedule_id"/>
+        <field name="notes"/>
+        <field name="state"/>
+      </tree>
+    </field>
+  </record>
+
+  <record id="shifting_schedule_view_form" model="ir.ui.view">
+    <field name="name">shifting.schedule.form</field>
+    <field name="model">shifting.schedule</field>
+    <field name="arch" type="xml">
+      <form string="Shifting Schedule" name="shifting_name">
+        <header>
+          <button name="submit_request" string="Submit"
+            class="oe_highlight" states="draft" type="object"/>
+          <button name="confirm_request" string="Confirm"
+            class="oe_highlight" states="submitted" type="object"/>
+          <button name="verify_request" string="Verify" class="oe_highlight" states="confirmed" type="object"/>
+          <button name="approve_request" string="Approve" class="oe_highlight" states="verified" type="object"/>
+          <button name="cancel_request" string="Cancel" class="oe_highlight" states="submitted,confirmed,verified" type="object"/>
+          <button name="reset_to_draft_request" string="Reset to Draft" class="oe_highlight" states="canceled" type="object"/>
+          <field name="state" widget="statusbar" statusbar_visible="draft,approved" statusbar_colors="{'draft':'green'}"/>
+        </header>
+        <sheet>
+          <div class="oe_title">
+            <h1>
+              <field name="name" placeholder="Title"/>
+            </h1>
+            <h3>
+              <label for="date" class="oe_inline" string="Date :"/>
+              <field name="date" class="oe_inline"/>
+            </h3>
+          </div>
+          <group>
+            <group>
+              <field name="company_id" groups="base.group_multi_company" options="{'no_create': True}"/>
+              <field name="employee_schedule_id" options="{'no_create': True}" domain="[('company_id', '=', company_id)]"/>
+              <separator string="Workshift Schedule" colspan="2"/>
+              <label for="date_start" string="Date Range" colspan="2"/>
+              <div colspan="2">
+                <field name="date_start" placeholder="Date To" class="oe_inline"/> to
+                <field name="date_end" placeholder="Date To" class="oe_inline"/>
+              </div>
+              <label for="start_hour" string="Hour Range" colspan="2"/>
+              <div colspan="2">
+                <field name="start_hour" widget="float_time" placeholder="HH:MM" class="oe_inline"/> to
+                <field name="end_hour" widget="float_time" placeholder="HH:MM" class="oe_inline"/>
+              </div>
+              <separator string="Restday Switch" colspan="2"/>
+              <field name="restday_ids" nolabel="1" colspan="2">
+                <tree string="Restday Switch" create="false" delete="false" editable="top">
+                  <field name="date_original"/>
+                  <field name="date_switch"/>
+                  <field name="shifting_rest_id" invisible="1"/>
+                </tree>
+              </field>
+            </group>
+            <group>
+              <field name="notes" placeholder="Notes..." nolabel="1"/>
+              <separator string="Employees" colspan="2"/>
+              <field name="employee_ids" options="{'no_create': True}" nolabel="1" colspan="2" widget="many2many_tags"/>
+            </group>
+          </group>
+          <group>
+            <group>
+              <label for="submitted_by" states="submitted,confirmed,verified,approved"/>
+              <div states="submitted,confirmed,verified,approved">
+                <field name="submitted_by" class="oe_inline"/>
+                <field name="submitted_date" class="oe_inline"/>
+              </div>
+              <label for="confirmed_by" states="confirmed,verified,approved"/>
+              <div states="confirmed,verified,approved">
+                <field name="confirmed_by" class="oe_inline"/>
+                <field name="confirmed_date" class="oe_inline"/>
+              </div>
+              <label for="verified_by" states="verified,approved"/>
+              <div states="verified,approved">
+                <field name="verified_by" class="oe_inline"/>
+                <field name="verified_date" class="oe_inline"/>
+              </div>
+            </group>
+            <group>
+              <label for="approved_by" states="approved"/>
+              <div states="approved">
+                <field name="approved_by" class="oe_inline"/>
+                <field name="approved_date" class="oe_inline"/>
+              </div>
+              <label for="canceled_by" states="canceled"/>
+              <div states="canceled">
+                <field name="canceled_by" class="oe_inline"/>
+                <field name="canceled_date" class="oe_inline"/>
+              </div>
+            </group>
+          </group>
+        </sheet>
+        <div class="oe_chatter">
+          <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+          <field name="activity_ids" widget="mail_activity"/>
+          <field name="message_ids" widget="mail_thread"/>
+        </div>
+      </form>
+    </field>
+  </record>
+
+  <record id="shifting_schedule_action_form" model="ir.actions.act_window">
+    <field name="name">Shifting Schedule</field>
+    <field name="res_model">shifting.schedule</field>
+    <field name="view_mode">tree,form</field>
+  </record>
+
+  <!-- <menuitem id="menu_hr_shifting_schedule" name="Shifting" parent="hr_attendance.menu_hr_attendance_manage_attendances" sequence="16"/>
+
+  <menuitem id="menu_hr_attendance_view_employees_kanban" name="Employees" parent="menu_hr_attendance_manage_attendances" sequence="15" groups="hr_attendance.group_hr_attendance_user" action="hr.open_view_employee_list_my"/> -->
+
+
+  <menuitem id="menu_shifting_schedule_action_form" name="Shifting Schedule" parent="hr_attendance.menu_hr_attendance_manage_attendances" sequence="16" action="shifting_schedule_action_form"/>
+
+</odoo>

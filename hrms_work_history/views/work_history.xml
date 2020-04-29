@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data>
+    <!-- Inherit Form view -->
+    <record id="EmployeeWorkHistory_form" model="ir.ui.view">
+      <field name="name">EmployeeWorkHistory.form</field>
+      <field name="model">hr.employee</field>
+      <field name="inherit_id"
+             ref="hrms_employee_201.inherit_employee_form_view"/>
+      <field name="arch" type="xml">
+        <xpath expr="//page[@name='contract_history']" position="before">
+          <page name="work_history" string="Work History">
+            <group string="Work History">
+              <field name="work_history_ids" nolabel="1">
+                <tree>
+                  <field name="company_name"/>
+                  <field name="address"/>
+                  <field name="line_of_business"/>
+                  <field name="position"/>
+                  <field name="start_date"/>
+                  <field name="end_date"/>
+                </tree>
+              </field>
+            </group>
+          </page>
+        </xpath>
+      </field>
+    </record>
+  </data>
+</odoo>

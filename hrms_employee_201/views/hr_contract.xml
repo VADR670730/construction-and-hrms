@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data>
+
+    <!-- Inherit Form view -->
+    <record id="Contract_form_view_inherit" model="ir.ui.view">
+      <field name="name">Contract.form</field>
+      <field name="model">hr.contract</field>
+      <field name="inherit_id" ref="hr_contract.hr_contract_view_form"/>
+      <field name="arch" type="xml">
+        <field name="reported_to_secretariat" position="after">
+          <field name="date_created" readonly="1"/>
+          <field name="reason_changing" readonly="1"
+            attrs="{'invisible': [('reason_changing', '=', False)]}" />
+        </field>
+      </field>
+    </record>
+
+  </data>
+</odoo>
