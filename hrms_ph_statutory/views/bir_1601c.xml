@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+  <menuitem id="menu_hrms_ph_statutory" name="Statutory" parent="hr_payroll.menu_hr_payroll_root" sequence="4"/>
+
+  <record id="bir_1601c_view_tree" model="ir.ui.view">
+    <field name="name">bir.1601c.form</field>
+    <field name="model">bir.1601c</field>
+    <field name="arch" type="xml">
+      <tree string="BIR 1601c">
+        <field name="state"/>
+        <field name="month_year"/>
+        <field name="company_id"/>
+        <field name="total_compensation"/>
+        <field name="total_penalties"/>
+        <field name="total_tax_due"/>
+        <field name="net_taxable"/>
+      </tree>
+    </field>
+  </record>
+
+
+  <record id="bir_1601c_view_form" model="ir.ui.view">
+    <field name="name">bir.1601c.form</field>
+    <field name="model">bir.1601c</field>
+    <field name="arch" type="xml">
+      <form string="BIR 1601c">
+        <header>
+          <button name="compute_compensation" string="Compute Compensation" icon="fa-calculator"
+            class="oe_highlight" states="draft" type="object"/>
+          <button name="submit_request" string="Submit"
+            class="oe_highlight" states="draft" type="object"/>
+          <button name="confirm_request" string="Confirm"
+            class="oe_highlight" states="submitted" type="object"/>
+          <button name="verify_request" string="Verify"
+            class="oe_highlight" states="confirmed" type="object"/>
+          <button name="approve_request" string="Approve"
+            class="oe_highlight" states="verified" type="object"/>
+          <button name="cancel_request" string="Cancel"
+            class="oe_highlight" states="submitted,confirmed,verified" type="object"/>
+          <button name="reset_to_draft_request"
+            string="Reset to Draft" class="oe_highlight" states="canceled" type="object"/>
+          <field name="state" widget="statusbar" statusbar_visible="draft,approved" statusbar_colors="{'draft':'green'}"/>
+        </header>
+        <sheet>
+          <div class="oe_title">
+            <h1>
+              <field name="month_year" placeholder="MM/YYYY"/>
+            </h1>
+            <div name="options_active">
+              <div>
+                <label for="company_id" class="oe_inline" string="Company"/>
+                <field name="company_id" class="oe_inline oe_input_align"/>
+              </div>
+            </div>
+          </div>
+          <field name="note" placeholder="Notes..." colspan="2"/>
+          <notebook>
+            <page name="computation" string="Tax Computation">
+              <group>
+                <group>
+                  <field name="total_compensation"/>
+                  <field name="taxable_compensation"/>
+                  <field name="taxable_compensation_non_withheld"/>
+                  <field name="net_taxable"/>
+                </group>
+                <group string="Non-Taxable/Exempt Compensation">
+                  <field name="mwe"/>
+                  <field name="mwe_other"/>
+                  <field name="deminimis"/>
+                  <field name="statutory_contribution"/>
+                  <label for="other_non_taxable_amount"/>
+                  <div>
+                    <field name="other_non_taxable_details" attrs="{'required': [('other_non_taxable_amount', 'not in', [0])]}" class="oe_inline"/>
+                    <field name="other_non_taxable_amount" class="oe_inline oe_input_align"/>
+                  </div>
+                  <field name="total_nontoxable"/>
+                </group>
+              </group>
+              <group>
+                <group>
+                  <field name="tax_withheld"/>
+                  <field name="tax_due"/>
+                </group>
+                <group string="Add/Less">
+                  <field name="adjustment"/>
+                  <field name="tax_withheld_remittance"/>
+                  <field name="tax_remitted_previously"/>
+                  <label for="other_remittance_detail"/>
+                  <div>
+                    <field name="other_remittance_detail" attrs="{'required': [('total_remitance_made', 'not in', [0])]}" class="oe_inline"/>
+                    <field name="other_remittance" class="oe_inline oe_input_align"/>
+                  </div>
+                  <field name="total_remitance_made"/>
+                </group>
+              </group>
+              <group>
+                <group>
+                  <field name="total_penalties"/>
+                  <field name="total_tax_due"/>
+                </group>
+                <group string="Penalties">
+                  <field name="surcharge"/>
+                  <field name="interest"/>
+                  <field name="compromise"/>
+                </group>
+              </group>
+            </page>
+          </notebook>
+          <group>
+            <group>
+              <label for="submitted_by" states="submitted,confirmed,verified,approved"/>
+              <div states="submitted,confirmed,verified,approved">
+                <field name="submitted_by" class="oe_inline"/>
+                <field name="submitted_date" class="oe_inline"/>
+              </div>
+              <label for="confirmed_by" states="confirmed,verified,approved"/>
+              <div states="confirmed,verified,approved">
+                <field name="confirmed_by" class="oe_inline"/>
+                <field name="confirmed_date" class="oe_inline"/>
+              </div>
+              <label for="verified_by" states="verified,approved"/>
+              <div states="verified,approved">
+                <field name="verified_by" class="oe_inline"/>
+                <field name="verified_date" class="oe_inline"/>
+              </div>
+            </group>
+            <group>
+              <label for="approved_by" states="approved"/>
+              <div states="approved">
+                <field name="approved_by" class="oe_inline"/>
+                <field name="approved_date" class="oe_inline"/>
+              </div>
+              <label for="canceled_by" states="canceled"/>
+              <div states="canceled">
+                <field name="canceled_by" class="oe_inline"/>
+                <field name="canceled_date" class="oe_inline"/>
+              </div>
+            </group>
+          </group>
+        </sheet>
+        <div class="oe_chatter">
+          <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+          <field name="activity_ids" widget="mail_activity"/>
+          <field name="message_ids" widget="mail_thread"/>
+        </div>
+      </form>
+    </field>
+  </record>
+
+  <record id="bir_1601c_action_form" model="ir.actions.act_window">
+    <field name="name">BIR 1601c Details</field>
+    <field name="res_model">bir.1601c</field>
+    <field name="view_mode">tree,form</field>
+  </record>
+
+  <menuitem id="menu_bir_1601c" action="bir_1601c_action_form" parent="menu_hrms_ph_statutory" sequence="1"/>
+
+</odoo>

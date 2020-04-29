@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data>
+    <record model="ir.ui.view" id="CandidateRefuseWizard_wizard_form">
+      <field name="name">CandidateRefuseWizard.form</field>
+      <field name="model">candidate_refuse.wizard</field>
+      <field name="type">form</field>
+      <field name="arch" type="xml">
+        <form string="Confirm dialog">
+          <field name="refuse" readonly="1" />
+          <footer>
+            <button class="oe_highlight" type="object"
+                    name="archive_applicant" string="Archived" />
+            <button class="oe_highlight" type="object"
+                    name="black_listed" string="Add to Blacklist" />
+            <button name="cancel" type="object" string="Cancel" />
+          </footer>
+        </form>
+      </field>
+    </record>
+
+    <record model="ir.ui.view" id="BlockedCandidateWizard_wizard_form">
+      <field name="name">BlockedCandidateWizard.form</field>
+      <field name="model">blocked.candidate.wizard</field>
+      <field name="type">form</field>
+      <field name="arch" type="xml">
+        <form string="Confirm dialog">
+          <field name="blocked" readonly="1" />
+          <footer>
+            <button class="oe_highlight" type="object"
+                    name="force_change" string="OK" />
+            <button name="cancel" type="object" string="Cancel"/>
+          </footer>
+        </form>
+      </field>
+    </record>
+
+    <record model="ir.ui.view" id="DuplicateCandidateWizard_wizard_form">
+      <field name="name">DuplicateCandidateWizard.form</field>
+      <field name="model">duplicate.candidate.wizard</field>
+      <field name="type">form</field>
+      <field name="arch" type="xml">
+        <form string="Confirm dialog">
+          <field name="duplicate" readonly="1" />
+          <footer>
+            <button class="oe_highlight" type="object" name="view"
+                    string="View Application Detail" />
+          </footer>
+        </form>
+      </field>
+    </record>
+  </data>
+</odoo>

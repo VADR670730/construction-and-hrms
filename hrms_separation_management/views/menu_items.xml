@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+  <data>
+
+    <menuitem name="Separation Management" id="hrms_separation_management_root" sequence="1"
+              web_icon="hrms_separation_management,static/description/ralf.jpeg"/>
+
+    <menuitem name="Dashboard" id="menu_item_dashboard_separation"
+              parent="hrms_separation_management_root"
+              action="openacademy_board"
+              sequence="0"/>
+
+    <menuitem name="Resignation Letter" id="menu_item_resignation_letter"
+              parent="hrms_separation_management_root"
+              action="HRMSResignationLetter_action_form"
+              sequence="1"/>
+
+    <menuitem name="Separation Request" id="menu_item_separation"
+              parent="hrms_separation_management_root"
+              action="HR_Separation_action_form"
+              sequence="2"/>
+
+    <menuitem name="Exit Clearance" id="menu_item_exit_clearance"
+              parent="hrms_separation_management_root"
+              action="HRMSExitClearance_action_form"
+              sequence="3"/>
+
+    <menuitem name="Configuration"
+              id="menu_item_separation_management_configuration"
+              parent="hrms_separation_management_root"/>
+
+    <menuitem name="Resignation Reason"
+              id="menu_item_configuration_resignation_reason"
+              parent="menu_item_separation_management_configuration"
+              action="HRMSResignationReason_action_form"
+              sequence="0"/>
+
+    <menuitem name="Exit Clerance Approver"
+              id="menu_item_configuration_exit_clearance_approver"
+              parent="menu_item_separation_management_configuration"
+              action="HRMSExitClearanceApprover_action_form"
+              sequence="1"/>
+
+
+  </data>
+</odoo>

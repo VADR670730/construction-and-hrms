@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_shifting_schedule_user,shifting_schedule_user,model_shifting_schedule,base.group_user,1,1,1,1
+access_shifting_schedule_restday_user,shifting_schedule_restday_user,model_shifting_schedule_restday,base.group_user,1,1,1,1

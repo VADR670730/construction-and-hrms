@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data>
+
+    <!-- hrv3.training Action -->
+    <record id="hrms_training_action_form" model="ir.actions.act_window">
+      <field name="name">Training</field>
+      <field name="res_model">hrms.training</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- hrv3.training Tree View -->
+    <record id="hrms_training_view_tree" model="ir.ui.view">
+      <field name="name">hrv3.training.tree</field>
+      <field name="model">hrms.training</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="training_name"/>
+        </tree>
+      </field>
+    </record>
+
+    <!-- Top menu item -->
+    <menuitem name="Training" id="hrms_training" sequence="1"
+              action="hrms_training_action_form"/>
+
+    <!-- hrv3.training Form View -->
+    <record id="hrms_training_view_form" model="ir.ui.view">
+      <field name="name">hrv3.training.form</field>
+      <field name="model">hrms.training</field>
+      <field name="arch" type="xml">
+        <form>
+          <header>
+            <button string="Done" type="object" name="done"
+                    class="oe_highlight"
+                    attrs="{'invisible': [('status', 'in', ('Completed', 'Cancelled'))]}"/>
+            <button string="Cancel" type="object" name="cancel"
+                    class="oe_highlight"
+                    attrs="{'invisible': [('status', 'in', ('Completed', 'Cancelled'))]}"/>
+            <field name="status" widget="statusbar"/>
+          </header>
+          <sheet>
+            <h1 attrs="{'invisible': [('status', '!=', 'Completed')]}">
+              Training Completed
+            </h1>
+            <group string="Training Name">
+              <h1>
+                <field name="training_name" nolabel="1" style="width:50%"/>
+              </h1>
+            </group>
+            <group>
+              <group>
+                <field name="subject"/>
+                <field name="employee_ids" widget="many2many_tags"/>
+                <field name="training_type"/>
+                <field name="trainor"/>
+                <field name="sponsor"/>
+                <field name="organizer"/>
+              </group>
+
+              <group>
+                <field name="duration"/>
+                <field name="start_date"/>
+                <field name="end_date"/>
+                <field name="cost"/>
+                <field name="acquire_certificate"
+                       attrs="{'invisible': [('status', '!=', 'Completed')]}"/>
+              </group>
+            </group>
+
+            <label for="description"/>
+            <field name="description" nolabel="1"/>
+
+            <group>
+              <group>
+                <label for="venue"/>
+                <field name="on_premises"/>
+              </group>
+            </group>
+            <field name="venue" nolabel="1"/>
+          </sheet>
+        </form>
+      </field>
+    </record>
+
+    <!-- Inherit Form view -->
+    <record id="inherit_employee_for_training" model="ir.ui.view">
+      <field name="name">hr.employee.form</field>
+      <field name="model">hr.employee</field>
+      <field name="inherit_id"
+             ref="hrms_employee_201.inherit_employee_form_view"/>
+      <field name="arch" type="xml">
+        <page name="for_skills" position="inside">
+          <label for="training_ids"/>
+          <field name="training_ids">
+            <tree>
+              <field name="training_name" string="Training Name"/>
+              <field name="subject"/>
+              <field name="training_type"/>
+              <field name="date_completed"/>
+              <field name="venue"/>
+              <field name="acquire_certificate"/>
+              <field name="trainor"/>
+              <field name="duration"/>
+              <field name="cost"/>
+              <field name="sponsor"/>
+              <field name="status"/>
+            </tree>
+          </field>
+        </page>
+      </field>
+    </record>
+  </data>
+</odoo>

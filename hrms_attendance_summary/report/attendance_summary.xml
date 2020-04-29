@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+  <report
+    id="attendance_summary_report"
+    model="hr.attendance.summary.line"
+    string="Print Employee Attendance Summary"
+    report_type="xlsx"
+    name="hrms_attendance_summary.attendance_summary_xls"
+    file="hrms_attendance_summary.attendance_summary_xls"
+    attachment_use="True"
+    menu="False"
+    />
+
+</odoo>

@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_sss_table_line_user,sss_table_line_user,model_sss_table_line,base.group_user,1,1,1,1
+access_sss_table_user,sss_table_user,model_sss_table,base.group_user,1,1,1,1
+access_sss_contribution_employee_summary_user,sss_contribution_employee_summary_user,model_sss_contribution_employee_summary,base.group_user,1,1,1,1
+access_sss_contribution_summary_user,sss_contribution_summary_user,model_sss_contribution_summary,base.group_user,1,1,1,1

@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+  <data>
+
+    <record id="HRMSExitClearance_view_form" model="ir.ui.view">
+      <field name="name">HRMSExitClearance.form</field>
+      <field name="model">hr.exit.clearance</field>
+      <field name="arch" type="xml">
+        <form string="Exit Clearance">
+          <header>
+            <button name="submit" string="SUBMIT"
+                    class="oe_highlight" states="draft" type="object"/>
+            <button name="clear" string="CLEAR EMPLOYEE"
+                    class="oe_highlight" states="pending" type="object"/>
+            <field name="state" widget="statusbar"/>
+          </header>
+          <sheet>
+            <group name="decision_notes_approvaldate">
+              <group name='decision'>
+                <field name="decision" style="width:40%"/>
+              </group>
+              <group name='approvaldate'>
+                <field name="date_of_request" style="width:30%"/>
+              </group>
+              <label for="note"/>
+                <field name="note" />
+            </group>
+            <br/>
+            <group name="decision_notes_approvaldate">
+              <group name='decision'>
+                <field name="name"
+                  attrs="{'readonly': [('state', 'not in', ('draft'))]}"/>
+                <field name="job_id" />
+                <field name="joined" />
+                <field name="separation_parent_id" invisible="1"/>
+              </group>
+              <group name='approvaldate'>
+                <field name="separation_type" />
+                <field name="relieved" />
+                <field name="date_raised" />
+              </group>
+            </group>
+            <group name='clearance_details'>
+              <field name="clearance_details" nolabel="1"
+                attrs="{'readonly': [('state', '=', 'cleared')]}">
+                <tree string="Clerance Details" editable="bottom" create="false">
+                  <field name="clearance_id" invisible="1"/>
+                  <field name="name"/>
+                  <field name="job_id"/>
+                  <field name="department_id"/>
+                  <field name="status"/>
+                </tree>
+              </field>
+            </group><br/>
+            <group name="information">
+              <group name='file_info'>
+                <field name="submitted_by"
+                  attrs="{'readonly': [('state', 'not in', ('draft'))],
+                          'invisible': [('submitted_by','=',False)]}"/>
+                <field name="approved_by"
+                  attrs="{'readonly': [('state', 'not in', ('draft'))],
+                          'invisible': [('approved_by','=',False)]}"/>
+              </group>
+              <group name='file_info_date'>
+                <field name="date_submitted"
+                  attrs="{'readonly': [('state', 'not in', ('draft'))],
+                          'invisible': [('date_submitted','=',False)]}"/>
+                <field name="date_approved"
+                  attrs="{'readonly': [('state', 'not in', ('draft'))],
+                          'invisible': [('date_approved','=',False)]}"/>
+              </group>
+            </group>
+          </sheet>
+        </form>
+      </field>
+    </record>
+
+
+    <record id="HRMSExitClearanceApprover_view_form" model="ir.ui.view">
+      <field name="name">HRMSExitClearanceApprover.form</field>
+      <field name="model">hr.exit.clearance.approver</field>
+      <field name="arch" type="xml">
+        <form string="Clearance Approver">
+          <sheet>
+            <group>
+              <field name="job_id"/>
+            </group>
+            <field name="approve_ids" nolabel="1">
+              <tree string="Clerance Approver" editable="bottom">
+                <field name="approver_id" invisible="1"/>
+                <field name="name"/>
+                <field name="job_id"/>
+                <field name="department_id"/>
+              </tree>
+            </field>
+          </sheet>
+        </form>
+      </field>
+    </record>
+
+    <record id="HRMSExitClearanceApprover_view_tree" model="ir.ui.view">
+      <field name="name">HRMSExitClearanceApprover.tree</field>
+      <field name="model">hr.exit.clearance.approver</field>
+      <field name="arch" type="xml">
+        <tree string="Exit Clerance Approver">
+          <field name="job_id"/>
+        </tree>
+      </field>
+    </record>
+
+    <record id="HRMSExitClearanceApprover_action_form" model="ir.actions.act_window">
+      <field name="name">Exit Clerance Approver</field>
+      <field name="res_model">hr.exit.clearance.approver</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+
+    <record id="HRMSExitClearance_view_tree" model="ir.ui.view">
+      <field name="name">HRMSExitClearance.tree</field>
+      <field name="model">hr.exit.clearance</field>
+      <field name="arch" type="xml">
+        <tree string="Exit Clearance">
+          <field name="name"/>
+          <field name="separation_type"/>
+          <field name="date_of_request"/>
+          <field name="state"/>
+        </tree>
+      </field>
+    </record>
+
+    <record id="HRMSExitClearance_action_form" model="ir.actions.act_window">
+      <field name="name">Exit Clearance</field>
+      <field name="res_model">hr.exit.clearance</field>
+      <field name="view_mode">tree,form</field>
+      <field name="view_type">form</field>
+    </record>
+
+  </data>
+</odoo>

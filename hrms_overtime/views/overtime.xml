@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<data>
+
+		<record id="hr_overtime_view_tree" model="ir.ui.view">
+			<field name="name">hr.overtime.tree</field>
+			<field name="model">hr.overtime</field>
+			<field name="arch" type="xml">
+				<tree string="Overtime Filling">
+					<field name="employee_id"/>
+					<field name="request_date"/>
+					<field name="name" placeholder="Overtime Reasons"/>
+					<field name="state"/>
+				</tree>
+			</field>
+		</record>
+
+    <record id="hr_overtime_view_form" model="ir.ui.view">
+      <field name="name">hr.overtime.form</field>
+      <field name="model">hr.overtime</field>
+      <field name="arch" type="xml">
+        <form string="Overtime Filling">
+          <header>
+						<button name="submit_request" string="Submit"
+	            class="oe_highlight" states="draft" type="object"/>
+	          <button name="confirm_request" string="Confirm"
+	            class="oe_highlight" states="submitted" type="object"/>
+	          <button name="verify_request" string="Verify"
+							class="oe_highlight" states="confirmed" type="object"/>
+	          <button name="approve_request" string="Approve"
+							class="oe_highlight" states="verified" type="object"/>
+	          <button name="cancel_request" string="Cancel"
+							class="oe_highlight" states="submitted,confirmed,verified" type="object"/>
+	          <button name="reset_to_draft_request"
+							string="Reset to Draft" class="oe_highlight" states="canceled" type="object"/>
+	          <field name="state" widget="statusbar" statusbar_visible="draft,approved" statusbar_colors="{'draft':'green'}"/>
+          </header>
+          <sheet>
+            <div class="oe_title">
+              <h1>
+                <field name="employee_id" placeholder="Employee Name"/>
+              </h1>
+              <div name="options_active">
+                <div>
+                  <label for="request_date" class="oe_inline" string="Request Date"/>
+                  <field name="request_date" class="oe_inline oe_input_align"/>
+                </div>
+              </div>
+            </div>
+            <group>
+              <group string="Reason">
+								<field name="name" readonly="1" force_save="1"/>
+                <field name="description" nolabel="1" colspan="2" placeholder="Overtime Reasons"/>
+              </group>
+              <group string="Overtime Hours">
+                <div colspan="2">
+                  <field name="overtime_start" class="oe_inline"/> -
+                  <field name="overtime_end" class="oe_inline"/>
+									<button name="compute_time" string="Compute Hours" type="object" icon="fa-calendar-check"
+                    class="oe_link oe_inline" states="draft"/>
+                </div>
+								<field name="overtime_work_date" readonly="1"/>
+              </group>
+            </group>
+            <group string="Overtime Pay Rate/s">
+              <field name="work_type_ids" nolabel="1" colspan="2">
+                <tree string="Overtime Pay Rate/s" editable="top" create="false" delete="false">
+                  <field name="work_type_id"/>
+									<field name="code"/>
+                  <field name="hours" widget="float_time"/>
+                  <field name="start_date"/>
+                  <field name="end_date"/>
+									<field name="state" invisible="1"/>
+                </tree>
+              </field>
+            </group>
+						<group>
+	            <group>
+	              <label for="submitted_by" states="submitted,confirmed,verified,approved"/>
+	              <div states="submitted,confirmed,verified,approved">
+	                <field name="submitted_by" class="oe_inline"/>
+	                <field name="submitted_date" class="oe_inline"/>
+	              </div>
+	              <label for="confirmed_by" states="confirmed,verified,approved"/>
+	              <div states="confirmed,verified,approved">
+	                <field name="confirmed_by" class="oe_inline"/>
+	                <field name="confirmed_date" class="oe_inline"/>
+	              </div>
+	              <label for="verified_by" states="verified,approved"/>
+	              <div states="verified,approved">
+	                <field name="verified_by" class="oe_inline"/>
+	                <field name="verified_date" class="oe_inline"/>
+	              </div>
+	            </group>
+	            <group>
+	              <label for="approved_by" states="approved"/>
+	              <div states="approved">
+	                <field name="approved_by" class="oe_inline"/>
+	                <field name="approved_date" class="oe_inline"/>
+	              </div>
+	              <label for="canceled_by" states="canceled"/>
+	              <div states="canceled">
+	                <field name="canceled_by" class="oe_inline"/>
+	                <field name="canceled_date" class="oe_inline"/>
+	              </div>
+	            </group>
+	          </group>
+          </sheet>
+          <div class="oe_chatter">
+            <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+            <field name="activity_ids" widget="mail_activity"/>
+            <field name="message_ids" widget="mail_thread"/>
+          </div>
+        </form>
+      </field>
+    </record>
+
+    <record id="hr_overtime_action_form" model="ir.actions.act_window">
+      <field name="name">Request</field>
+      <field name="res_model">hr.overtime</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="menu_hr_overtime" name="Overtime and Holiday Works Filling" parent="hr_attendance.menu_hr_attendance_manage_attendances" sequence="16"/>
+		<menuitem id="menu_hr_overtime_request" action="hr_overtime_action_form" parent="menu_hr_overtime" sequence="1"/>
+
+		<record id="hr_overtime_line_view_tree" model="ir.ui.view">
+			<field name="name">hr.overtime.line.tree</field>
+			<field name="model">hr.overtime.line</field>
+			<field name="arch" type="xml">
+				<tree string="Overtime Logs" editable="top">
+					<field name="overtime_id" readonly="1"/>
+					<field name="employee_id" readonly="1"/>
+					<field name="description" readonly="1"/>
+					<field name="work_type_id" readonly="1"/>
+					<field name="code" readonly="1"/>
+					<field name="hours" string="Approved Hours" widget="float_time" readonly="1"/>
+					<field name="rendered_hours" string="Rendered Hours" widget="float_time" readonly="1"/>
+					<field name="start_date" readonly="1"/>
+					<field name="end_date" readonly="1"/>
+					<field name="state" readonly="1"/>
+				</tree>
+			</field>
+		</record>
+
+		<record id="hr_overtime_line_action_form" model="ir.actions.act_window">
+      <field name="name">Logs</field>
+      <field name="res_model">hr.overtime.line</field>
+      <field name="view_mode">tree,form</field>
+    </record>
+
+		<menuitem id="menu_hr_overtime_logs" action="hr_overtime_line_action_form" parent="menu_hr_overtime" sequence="2"/>
+
+
+  </data>
+</odoo>

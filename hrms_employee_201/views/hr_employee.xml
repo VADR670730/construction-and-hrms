@@ -1,0 +1,377 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data>
+
+    <record id="open_view_reference_application" model="ir.actions.act_window">
+      <field name="name">Applications</field>
+      <field name="res_model">hr.applicant</field>
+      <field name="view_type">form</field>
+      <field name="view_mode">form,tree</field>
+      <field name="view_id" eval="False"/>
+    </record>
+
+    <!-- Inherit Form view -->
+    <record id="add_application_smart_button_employee" model="ir.ui.view">
+      <field name="name">hr.employee.form</field>
+      <field name="model">hr.employee</field>
+      <field name="inherit_id" ref="hr.view_employee_form"/>
+      <field name="arch" type="xml">
+        <xpath expr="//button[@name='toggle_active']" position="before">
+          <button name="get_reference_application" class="oe_stat_button"
+                  icon="fa-book" type="object">
+            <field name="application_name" widget="statinfo"
+                   string="Application"/>
+          </button>
+        </xpath>
+      </field>
+    </record>
+
+    <!-- Inherit Form view -->
+    <record id="inherit_employee_form_view" model="ir.ui.view">
+      <field name="name">hr.employee.form</field>
+      <field name="model">hr.employee</field>
+      <field name="inherit_id" ref="hr.view_employee_form"/>
+      <field name="arch" type="xml">
+        <field name="user_id" position="after">
+          <field name="application_id"/>
+        </field>
+
+        <field name="children" position="attributes">
+          <attribute name="attrs">
+            {'invisible': [('marital', '=', 'single')]}
+          </attribute>
+        </field>
+
+        <field name="passport_id" position="after">
+          <field name="passport_validity_date" groups="hr.group_hr_user"/>
+          <field name="place_of_passport_issuance" groups="hr.group_hr_user"/>
+        </field>
+
+        <field name="country_of_birth" position="after">
+          <field name="age"/>
+        </field>
+
+        <page name="personal_information" position="after">
+          <page name="requirements" string="Pre-Requirements">
+            <group string="Pre-employment Requirements">
+              <div class="container">
+                <div class="row">
+                  <div class="col-sm-4">
+                    <span>
+                      <field name="sss_checkbox" nolabel="1"
+                             class="oe_inline"/>
+                      <label for="sss" class="oe_inline" />
+                    </span>
+                    <br/>
+
+                    <span>
+                      <field name="hdmf_checkbox" nolabel="1"
+                             class="oe_inline" />
+                      <label for="hdmf" class="oe_inline"/>
+                    </span>
+                    <br/>
+
+                    <span>
+                      <field name="philhealth_checkbox" nolabel="1"
+                             class="oe_inline"/>
+                      <label for="philhealth"/>
+                    </span>
+                    <br/>
+
+                    <span>
+                      <field name="gsis_checkbox" nolabel="1"
+                             class="oe_inline"/>
+                      <label for="gsis" class="oe_inline" />
+                    </span>
+                    <br/>
+
+                    <span>
+                      <field name="tin_checkbox" nolabel="1"
+                             class="oe_inline"/>
+                      <label for="tin" class="oe_inline"/>
+                    </span>
+                    <br/>
+
+                    <span>
+                      <field name="medical_transaction_number_checkbox"
+                             nolabel="1" class="oe_inline"/>
+                      <label for="medical_transaction_number"/>
+                    </span>
+                  </div>
+
+                  <div class="col-sm-4">
+                    <span>
+                      <field name="sss" class="oe_inline"
+                             placeholder="e.g. 34-2431064-5"
+                             attrs="{'required': [('sss_checkbox', '=', True)], 'invisible': [('sss_checkbox', '!=', True)]}"/>
+                    </span>
+                    <br/>
+
+                    <span>
+                      <field name="hdmf" class="oe_inline"
+                             placeholder="e.g. 1234567"
+                             attrs="{'required': [('hdmf_checkbox', '=', True)], 'invisible': [('hdmf_checkbox', '!=', True)]}"/>
+                    </span>
+                    <br/>
+
+                    <span>
+                      <field name="philhealth" class="oe_inline"
+                             placeholder="e.g. 34-2431064-5"
+                             attrs="{'required': [('philhealth_checkbox', '=', True)], 'invisible': [('philhealth_checkbox', '!=', True)]}"/>
+                    </span>
+                    <br/>
+
+                    <span>
+                      <field name="gsis" class="oe_inline"
+                             placeholder="e.g. 34-2431064-5"
+                             attrs="{'required': [('gsis_checkbox', '=', True)], 'invisible': [('gsis_checkbox', '!=', True)]}"/>
+                    </span>
+                    <br/>
+
+                    <span>
+                      <field name="tin" class="oe_inline"
+                             placeholder="e.g. 000-123-456-001"
+                             attrs="{'required': [('tin_checkbox', '=', True)], 'invisible': [('tin_checkbox', '!=', True)]}"/>
+                    </span>
+                    <br/>
+
+                    <span>
+                      <field name="medical_transaction_number"
+                             class="oe_inline"
+                             attrs="{'required':
+                                    [('medical_transaction_number_checkbox', '=', True)], 'invisible': [('medical_transaction_number_checkbox', '!=', True)]}"/>
+                    </span>
+                  </div>
+
+                  <div class="col-sm-4">
+                    <div attrs="{'invisible': [('marital', '!=', 'Married')]}">
+                      <field name="marriage_checkbox"/>
+                      <label for="marriage_certificate"/>
+                      <field name="marriage_certificate"
+                             attrs="{'required': [('marriage_checkbox', '=', True)], 'invisible': [('marriage_checkbox', '!=', True)]}"/>
+                    </div>
+
+                    <div>
+                      <field name="birth_checkbox"/>
+                      <label for="birth_certificate"/>
+                      <field name="birth_certificate"
+                             attrs="{'required': [('birth_checkbox', '=', True)], 'invisible': [('birth_checkbox', '!=', True)]}"/>
+                    </div>
+
+                    <div>
+                      <field name="tor_checkbox"/>
+                      <label for="transcript_of_records"/>
+                      <field name="transcript_of_records"
+                             attrs="{'required': [('tor_checkbox', '=', True)], 'invisible': [('tor_checkbox', '!=', True)]}"/>
+                    </div>
+
+                    <div>
+                      <field name="diploma_checkbox"/>
+                      <label for="diploma"/>
+                      <field name="diploma"
+                             attrs="{'required': [('diploma_checkbox', '=', True)], 'invisible': [('diploma_checkbox', '!=', True)]}"/>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </group>
+
+            <group>
+              <div>
+                <field name="nbi_checkbox" nolabel="1"/>
+                <label for="nbi_clearance"/>
+                <div>
+                  <field name="nbi_clearance" class="oe_inline"
+                         placeholder="No."
+                         attrs="{'required': [('nbi_checkbox', '=', True)], 'invisible': [('nbi_checkbox', '!=', True)]}"/>
+                  <field name="nbi_expiration" class="oe_inline"
+                         placeholder="Expiration Date" nolabel="1"
+                         attrs="{'required': [('nbi_checkbox', '=', True)], 'invisible': [('nbi_checkbox', '!=', True)]}"/>
+                </div>
+
+                <div>
+                  <field name="nbi_issued_at" class="oe_inline"
+                         placeholder="Issued At" nolabel="1"
+                         attrs="{'required': [('nbi_checkbox', '=', True)], 'invisible': [('nbi_checkbox', '!=', True)]}"/>
+                  <field name="nbi_date_issued" class="oe_inline"
+                         placeholder="Date Issued" nolabel="1"
+                         attrs="{'required': [('nbi_checkbox', '=', True)], 'invisible': [('nbi_checkbox', '!=', True)]}"/>
+                </div>
+
+                <div>
+                  <field name="nbi_clearance_photo"
+                         attrs="{'required': [('nbi_checkbox', '=', True)], 'invisible': [('nbi_checkbox', '!=', True)]}"/>
+                </div>
+              </div>
+            </group>
+
+            <group>
+              <div>
+                <field name="police_checkbox" nolabel="1"/>
+                <label for="police_clearance"/>
+                <div>
+                  <field name="police_clearance" class="oe_inline"
+                         placeholder="No."
+                         attrs="{'required': [('police_checkbox', '=', True)], 'invisible': [('police_checkbox', '!=', True)]}"/>
+                  <field name="police_expiration" class="oe_inline"
+                         placeholder="Expiration Date" nolabel="1"
+                         attrs="{'required': [('police_checkbox', '=', True)], 'invisible': [('police_checkbox', '!=', True)]}"/>
+                </div>
+
+                <div>
+                  <field name="police_issued_at" class="oe_inline"
+                         placeholder="Issued At" nolabel="1"
+                         attrs="{'required': [('police_checkbox', '=', True)], 'invisible': [('police_checkbox', '!=', True)]}"/>
+                  <field name="police_date_issued" class="oe_inline"
+                         placeholder="Date Issued" nolabel="1"
+                         attrs="{'required': [('police_checkbox', '=', True)], 'invisible': [('police_checkbox', '!=', True)]}"/>
+                </div>
+
+                <div>
+                  <field name="police_clearance_photo"
+                         attrs="{'required': [('police_checkbox', '=', True)], 'invisible': [('police_checkbox', '!=', True)]}"/>
+                </div>
+              </div>
+            </group>
+
+            <group>
+              <div>
+                <field name="barangay_checkbox" nolabel="1"/>
+                <label for="barangay_clearance"/>
+                <div>
+                  <field name="barangay_clearance" class="oe_inline"
+                         placeholder="No."
+                         attrs="{'required': [('barangay_checkbox', '=', True)], 'invisible': [('barangay_checkbox', '!=', True)]}"/>
+                  <field name="barangay_expiration" class="oe_inline"
+                         placeholder="Expiration Date" nolabel="1"
+                         attrs="{'required': [('barangay_checkbox', '=', True)], 'invisible': [('barangay_checkbox', '!=', True)]}"/>
+                </div>
+
+                <div>
+                  <field name="barangay_issued_at" class="oe_inline"
+                         placeholder="Issued At" nolabel="1"
+                         attrs="{'required': [('barangay_checkbox', '=', True)], 'invisible': [('barangay_checkbox', '!=', True)]}"/>
+                  <field name="barangay_date_issued" class="oe_inline"
+                         placeholder="Date Issued" nolabel="1"
+                         attrs="{'required': [('barangay_checkbox', '=', True)], 'invisible': [('barangay_checkbox', '!=', True)]}"/>
+                </div>
+
+                <div>
+                  <field name="barangay_clearance_photo"
+                         attrs="{'required': [('barangay_checkbox', '=', True)], 'invisible': [('barangay_checkbox', '!=', True)]}"/>
+                </div>
+              </div>
+            </group>
+          </page>
+
+          <page string="Skills, Training, and Education" name="for_skills">
+            <label for="education_ids"/>
+            <field name="education_ids">
+              <tree editable="bottom">
+                <field name="type_id"/>
+                <field name="course"/>
+                <field name="standard"/>
+                <field name="year"/>
+                <field name="school_name"/>
+                <field name="address"/>
+                <field name="vital_info"/>
+              </tree>
+            </field>
+
+            <label for="skill_ids"/>
+            <field name="skill_ids">
+              <tree editable="bottom">
+                <field name="skill_name"/>
+                <field name="skill_type_id"/>
+                <field name="skill_level_id"/>
+              </tree>
+            </field>
+          </page>
+
+          <page name="health_info" string="Health Information">
+            <group>
+              <field name="fit_to_work"/>
+            </group>
+            <group>
+              <group string="Current Medical Information">
+                <label for="height"/>
+                <div class="o_row">
+                  <field name="height" nolabel="1"/>
+                  <span>
+                    <field name="height_uom" placeholder="mm"/>
+                  </span>
+                </div>
+                <label for="weight"/>
+                <div class="o_row">
+                  <field name="weight" nolabel="1"/>
+                  <span>
+                    <field name="weight_uom" placeholder="kg"/>
+                  </span>
+                </div>
+                <field name="blood_type"/>
+                <field name="drug_test"/>
+              </group>
+
+              <group/>
+
+              <group string="Health Insurance">
+                <group>
+                  <field name="health_card_provider"/>
+                  <field name="id_number"/>
+                  <field name="cap_limit"/>
+                  <field name="credit_usage"/>
+                </group>
+
+                <group>
+                  <label for="hmo_validity_date"/>
+                  <div class="o_row">
+                    <field name="hmo_validity_date" nolabel="1"/>
+                    <span>
+                      <field name="hmo_validity_date_end"/>
+                    </span>
+                  </div>
+                  <label for="for_renewal"/>
+                  <div class="o_row">
+                    <field name="for_renewal" nolabel="1"/>
+                    <span>
+                      <field name="renewal_date"/>
+                    </span>
+                  </div>
+                </group>
+              </group>
+            </group>
+
+            <group>
+              <field name="health_condition_ids" nolabel="1">
+                <tree editable="bottom">
+                  <field name="health_condition"/>
+                  <field name="doctor_name"/>
+                  <field name="address"/>
+                  <field name="medications"/>
+                  <field name="medical_documents"/>
+                  <field name="date"/>
+                  <field name="fit_to_work"/>
+                </tree>
+              </field>
+            </group>
+          </page>
+
+          <page name="contract_history" string="Contract History">
+            <group string="Contract History">
+              <field name="contract_history_ids" nolabel="1">
+                <tree editable="bottom">
+                  <field name="name" string="Contract Reference"/>
+                  <field name="date_created" string="Created On"/>
+                  <field name="date_start" string="Date Start"/>
+                  <field name="date_end" string="Date End"/>
+                  <field name="state" string="Status"/>
+                  <field name="reason_changing" string="Reason for Changing"/>
+                </tree>
+              </field>
+            </group>
+          </page>
+        </page>
+      </field>
+    </record>
+  </data>
+</odoo>

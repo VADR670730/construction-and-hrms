@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<data noupdate="1">
+
+
+		<record id="sequence_undeertime_request" model="ir.sequence">
+				<field name="name">Undertime Request</field>
+				<field name="code">undertime.request</field>
+				<field name="prefix">UT%(year)s/%(month)s/</field>
+				<field name="padding">5</field>
+				<field name="company_id" eval="False"/>
+		</record>
+
+  </data>
+</odoo>

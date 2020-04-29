@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data>
+
+    <!-- actions opening views on models -->
+    <record model="ir.actions.act_window" id="hrv3_company_violation_action_window">
+      <field name="name">Company Violation List</field>
+      <field name="type">ir.actions.act_window</field>
+      <field name="res_model">hr.company.violation</field>
+      <field name="view_mode">tree,form</field>
+      <field name="view_type">form</field>
+    </record>
+
+    <!-- explicit list view definition -->
+    <record model="ir.ui.view" id="hrv3_company_violation_list">
+      <field name="name">Violation List</field>
+      <field name="model">hr.company.violation</field>
+      <field name="arch" type="xml">
+        <tree>
+          <field name="name"/>
+          <field name="description"/>
+          <field name="policy_violated_ids" widget="many2many_tags" />
+        </tree>
+      </field>
+    </record>
+
+    <!-- explicit form view definition -->
+    <record model="ir.ui.view" id="hrv3_company_violation_form">
+      <field name="name">Violation Form</field>
+      <field name="model">hr.company.violation</field>
+      <field name="arch" type="xml">
+        <form>
+          <sheet>
+            <group>
+              <group>
+                <field name="name"/>
+              </group>
+            </group>
+            <group>
+              <field name="policy_violated_ids">
+                <tree editable="bottom">
+                  <field name="name"/>
+                  <field name="offense_code_id"/>
+                </tree>
+              </field>
+            </group>
+            <group string="Violation Description">
+              <field name="description" nolabel="1"/>
+            </group>
+          </sheet>
+        </form>
+      </field>
+    </record>
+
+    <record id="violation_policy_offense_action" model="ir.actions.act_window">
+      <field name="type">ir.actions.act_window</field>
+      <field name="name">violation.policy.offense.tree</field>
+      <field name="res_model">hr.company.violation.policy.offense</field>
+      <field name="view_mode">tree,form</field>
+      <field name="view_type">form</field>
+    </record>
+
+    <record model="ir.ui.view" id="violation_policy_offense_action_tree">
+      <field name="name">violation.policy.offense.action.tree</field>
+      <field name="model">hr.company.violation.policy.offense</field>
+      <field name="arch" type="xml">
+        <tree editable="bottom">
+          <field name="policy_id"/>
+          <field name="offense_id"/>
+        </tree>
+      </field>
+    </record>
+
+
+
+
+  </data>
+</odoo>

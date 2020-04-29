@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+  <menuitem id="menu_sub_payroll" name="Payrolls" parent="hr_payroll.menu_hr_payroll_root" sequence="1"/>
+  <menuitem action="hr_payroll.action_hr_payslip_run_tree" id="hr_payroll.menu_hr_payslip_run" name="Batch Payslip" parent="menu_sub_payroll" sequence="1"/>
+  <menuitem action="hr_payroll.action_view_hr_payslip_form" id="hr_payroll.menu_department_tree" parent="menu_sub_payroll" groups="hr_payroll.group_hr_payroll_user" sequence="2"/>
+  <menuitem action="hrms_payroll_final_payment.hr_final_payment_action_form" id="hrms_payroll_final_payment.menu_hr_final_payment_action" groups="base.group_user" parent="menu_sub_payroll" sequence="3"/>
+
+  <menuitem id="menu_sub_payroll_benefits" name="Benefits" parent="hr_payroll.menu_hr_payroll_root" sequence="2"/>
+  <menuitem action="hrms_allowance.hr_allowance_action_form" id="hrms_allowance.menu_hr_allowance_action" groups="base.group_user" parent="menu_sub_payroll_benefits" sequence="1"/>
+  <menuitem action="hrms_deduction.hr_deduction_action_form" id="hrms_deduction.menu_hr_deduction_action" parent="menu_sub_payroll_benefits" sequence="2"/>
+
+  <menuitem id="menu_sub_payroll_contribution" name="Statutory Contributions" parent="hr_payroll.menu_hr_payroll_root" sequence="3"/>
+  <menuitem id="hrms_payroll_pagibig.menu_pagibig_contribution_summary" action="hrms_payroll_pagibig.pagibig_contribution_summary_action_form" name="HDMF" parent="menu_sub_payroll_contribution" sequence="1"/>
+  <menuitem id="hrms_payroll_sss.menu_sss_contribution_summary" action="hrms_payroll_sss.sss_contribution_summary_action_form" name="SSS" parent="menu_sub_payroll_contribution" sequence="2"/>
+  <menuitem id="hrms_payroll_philhealth.menu_philhealth_contribution_summary" action="hrms_payroll_philhealth.philhealth_contribution_summary_action_form" name="Philhealth" parent="menu_sub_payroll_contribution" sequence="3"/>
+
+  <menuitem id="hrms_payroll.menu_hr_payslip_report" name="Reports" parent="hr_payroll.menu_hr_payroll_root" sequence="4"/>
+  <menuitem action="hrms_payroll.payroll_register_report_action_form" id="hrms_payroll.menu_payroll_register_report_widget" parent="hrms_payroll.menu_hr_payslip_report" groups="hr_payroll.group_hr_payroll_user" sequence="1"/>
+  <menuitem id="menu_sub_payroll_contribution_summary" name="Statutory Contribution Summaries" parent="hrms_payroll.menu_hr_payslip_report" sequence="2"/>
+  <menuitem id="hrms_payroll_pagibig.menu_pagibig_contribution_employee_summary" action="hrms_payroll_pagibig.pagibig_contribution_employee_summary_action_form" name="HDMF" parent="menu_sub_payroll_contribution_summary" sequence="1"/>
+  <menuitem id="hrms_payroll_sss.menu_sss_employee_contribution_summary" action="hrms_payroll_sss.sss_contribution_employee_summary_action_form" name="SSS" parent="menu_sub_payroll_contribution_summary" sequence="2"/>
+  <menuitem id="hrms_payroll_philhealth.menu_philhealth_contribution_employee_summary" action="hrms_payroll_philhealth.philhealth_contribution_employee_summary_action_form" name="Philhealth" parent="menu_sub_payroll_contribution_summary" sequence="2"/>
+
+</odoo>

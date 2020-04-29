@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data noupdate="0">
+
+    <!-- <record id="category_custom_approval" model="ir.module.category">
+        <field name="name">Custom Approvals</field>
+        <field name="comment">Show line subtotals without taxes (B2B)</field>
+    </record>
+
+    <record id="group_request_submit" model="res.groups">
+        <field name="name">Submit Document</field>
+        <field name="comment">Submit Document</field>
+        <field name="category_id" ref="hrms_timekeeping.category_custom_approval"/>
+    </record>
+
+    <record id="group_request_confirm" model="res.groups">
+        <field name="name">Confirm Document</field>
+        <field name="comment">Confirm Document</field>
+        <field name="category_id" ref="hrms_timekeeping.category_custom_approval"/>
+    </record> -->
+
+  </data>
+</odoo>

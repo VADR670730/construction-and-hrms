@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+	<data>
+
+		<record id="company_holiday_view_calendar" model="ir.ui.view">
+			<field name="name">company.holiday.form</field>
+			<field name="model">company.holiday</field>
+			<field name="arch" type="xml">
+				<calendar string="Holidays" date_start="date" date_stop="date" mode="month" readonly_form_view_id="company_holiday_view_form" color="holiday_type">
+          <field name="name"/>
+					<field name="company_str"/>
+        </calendar>
+			</field>
+		</record>
+
+    <record id="company_holiday_view_form" model="ir.ui.view">
+      <field name="name">company.holiday.form</field>
+      <field name="model">company.holiday</field>
+      <field name="arch" type="xml">
+        <form string="Holidays" duplicate="false">
+          <sheet>
+            <div class="oe_title">
+              <label for="name"/>
+              <h1>
+                <field name="name" placeholder="Title"/>
+              </h1>
+            </div>
+            <group>
+              <group name="type">
+                <field name="date"/>
+                <field name="holiday_type"/>
+              </group>
+              <group name="company" string="Company/Branch Affected">
+                <field name="company_ids" nolabel="1" widget="many2many_tags" colspan="2" options="{'no_quick_create': True, 'no_create_edit' : True}"/>
+              </group>
+            </group>
+            <field name="memorandum" widget="pdf_viewer" colspan="2"/>
+          </sheet>
+        </form>
+      </field>
+    </record>
+
+		<record id="company_holiday_view_tree" model="ir.ui.view">
+			<field name="name">company.holiday.tree</field>
+			<field name="model">company.holiday</field>
+			<field name="arch" type="xml">
+				<tree string="Holidays">
+					<field name="name" placeholder="Title"/>
+					<field name="date"/>
+					<field name="company_ids" widget="many2many_tags"/>
+				</tree>
+			</field>
+		</record>
+
+    <record id="company_holiday_action_form" model="ir.actions.act_window">
+      <field name="name">Company Holiday</field>
+      <field name="res_model">company.holiday</field>
+      <field name="view_mode">calendar,tree,form</field>
+    </record>
+
+    <menuitem id="menu_company_holiday_settings" name="Company Holiday" parent="hr_attendance.menu_hr_attendance_settings"
+        sequence="9" action="company_holiday_action_form" groups="hr_attendance.group_hr_attendance_manager"/>
+  </data>
+</odoo>
