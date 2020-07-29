@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 {
-    'author':  'Srikesh Infotech',
+    'author':  'Srikesh Infotech, Ralf Cabarogias',
     'website': 'www.srikeshinfotech.com',
     'license': 'AGPL-3',
     'version': '11.0.0',

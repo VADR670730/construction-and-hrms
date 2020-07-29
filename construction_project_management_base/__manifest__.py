@@ -20,7 +20,7 @@
 ##############################################################################
 
 {
-    'author':  'Dennis Boy Silva - (Agilis Enterprise Solutions Inc.)',
+    'author':  'Dennis Boy Silva, Ralf Cabarogias - (Agilis Enterprise Solutions Inc.)',
     'website': 'agilis.com.ph',
     'license': 'AGPL-3',
     'category': 'Project',
