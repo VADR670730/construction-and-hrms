@@ -184,7 +184,7 @@
               <field name="project_stock_location_id" invisible="1"/>
               <field name="stock_location_name" invisible="1"/>
               <field name="stock_location_id" context="{'default_name': stock_location_name, 'location_id': project_stock_location_id}"/>
-              <!-- <field name="picking_type_id" domain="[('code', '=', 'internal')]" context="{'default_name': stock_location_name, 'default_code': 'internal', 'default_default_location_dest_id': stock_location_id, 'default_default_location_scr_id': project_stock_location_id}"/> -->
+              <field name="picking_type_id" domain="[('code', '=', 'internal')]" context="{'default_name': stock_location_name, 'default_code': 'internal', 'default_default_location_dest_id': stock_location_id, 'default_default_location_scr_id': project_stock_location_id}"/>
             </group>
           </page>
         </page>

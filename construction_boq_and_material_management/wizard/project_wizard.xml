@@ -1,6 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
 	<data>
+
+		<record id="project_used_quantity_waste_management_form" model="ir.ui.view">
+			<field name="name">project.used.quantity.waste.management.form</field>
+			<field name="model">project.used.quantity.waste.management</field>
+			<field name="arch" type="xml">
+				<form string="Used Quantity">
+					<group>
+						<field name="product_id" nolabel="1"></field>
+						<field name="material_id" invisible="1"></field>
+					</group>
+					<group colspan="2">
+						<field name="quantity" readonly="0"></field>
+					</group>
+					<footer>
+						<button string='Done' name="updateusedqty" type="object" class="btn-primary"/>
+						<button string="Cancel" class="btn-default" special="cancel"/>
+					</footer>
+				</form>
+			</field>
+		</record>
+
 		<record id="project_used_quantity_form" model="ir.ui.view">
 			<field name="name">project.used.quantity.form</field>
 			<field name="model">project.used.quantity</field>

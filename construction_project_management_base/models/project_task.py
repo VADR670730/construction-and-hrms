@@ -29,7 +29,7 @@ class ProjectTask(models.Model):
     project_stock_location_id = fields.Many2one('stock.location', string="Project Inventory Location", compute="_get_project_location", store=True)
     stock_location_id = fields.Many2one('stock.location', string="Task Inventory Location", domain="[('location_id', '=', project_stock_location_id)]", track_visibility="always")
     stock_location_name = fields.Char(string="Location Name", store=True, compute="_get_location_name", )
-    picking_type_id = fields.Many2one('stock.picking.type', string="Picking Operation")
+    picking_type_id = fields.Many2one('stock.picking.type', string="Picking Operation", required=True)
 
     # Budget And Actual Expeditures
     #Todo: Make all this field a "Computed fields" Badget: based on the BOQs; Expense: Based on the actual expense recored in the Analytic Account

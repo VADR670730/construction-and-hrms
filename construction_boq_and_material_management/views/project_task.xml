@@ -68,8 +68,12 @@
 								<field name="material_waste"></field>
 								<field name="waste_location_id"></field>
 								<field name="description"></field>
-								<!-- <field name="cutted_portion"></field>
-								<field name="cutted_qty"></field> -->
+								<field name="used_qty"></field>
+								<button name="actionusedqty" string="Used Qty" type="object"
+									icon="fa-sign-in text-success" attrs="{'invisible': [('qty', '&lt;=', 0)]}" />
+								<field name="consumptionprogress" widget="progressbar"></field>
+								<field name="withdrawalprogress" invisible="1" widget="progressbar"></field>
+								<!-- <field name="cutted_qty"></field> -->
 							</tree>
 						</field>
 					</group>

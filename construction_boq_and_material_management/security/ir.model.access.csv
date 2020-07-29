@@ -22,3 +22,4 @@ access_mr_nonbom_material,mr.nonbom.material,model_mr_nonbom_material,base.group
 access_project_used_quantity,project.used.quantity,model_project_used_quantity,base.group_user,1,1,1,1
 access_wizard_waste_process,wizard.waste.process,model_wizard_waste_process,base.group_user,1,1,1,1
 access_wizard_scrap_move,wizard.scrap.move,model_wizard_scrap_move,base.group_user,1,1,1,1
+access_wizard_project_used_quantity_waste_management,wizard.project.used.quantity.waste_management,model_project_used_quantity_waste_management,base.group_user,1,1,1,1

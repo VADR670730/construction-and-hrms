@@ -1,6 +1,70 @@
 # -*- coding: utf-8 -*-
 from odoo import fields, models, api, _
 from odoo.exceptions import UserError
+from logging import getLogger
+
+def log(*to_output):
+    getLogger().info("\n\n\n{0}\n\n".format(to_output))
+
+
+class ProjectUsedQuantityWasteManagement(models.Model):
+    _name = 'project.used.quantity.waste.management'
+    _description = "Project Used Quantity of Waste Management"
+
+    product_id = fields.Many2one('product.product', string="Product",
+                                 readonly=True)
+    quantity = fields.Float(string='Quantity')
+    material_id = fields.Many2one('project.waste.management',
+                                  string="Material")
+
+    @api.constrains('quantity')
+    def _onchange_used_qty(self):
+        qty = self.quantity
+        log(self.material_id.qty)
+        available_stock = self.material_id.qty
+        if(qty > available_stock):
+            raise UserError(_('Used Quantity​ can not be greater than the ​Available Stock .'))
+
+    @api.multi
+    def updateusedqty(self):
+        task = self.env.context['task_id']
+        received_qty = self.env.context['received']
+        product = self.product_id.id
+        scrap_product = self.env['project.scrap.products'].search([
+            ('task_id', '=', task), ('product_id', '=', product)])
+        scrap = 0
+        for scraps in scrap_product:
+            scrap += scraps.qty
+        available_qty = received_qty - (self.quantity + scrap)
+        self.material_id.write({'used_qty': self.material_id.used_qty + self.quantity,
+                                'available_stock': available_qty,
+                                'consumption_progress': self.quantity})
+        from_loc = self.material_id.task_id.stock_location_id.id
+
+        stock_picking = self.env['stock.picking']
+        stock_warehouse = self.env['stock.warehouse'].sudo().search([
+            ('company_id', '=', self.material_id.task_id.company_id.id)], limit=1)
+        stock_move = self.env['stock.move']
+        picking = stock_picking.create({
+                'picking_type_id': self.material_id.task_id.project_id.picking_type_id.id,
+                'location_id': from_loc,
+                'location_dest_id': stock_warehouse.lot_stock_id.id,
+                'material_id': self.material_id.id
+                                            })
+        stock_move.create({
+                'name': _('New Move:') + self.material_id.product_id.display_name,
+                'product_id': self.material_id.product_id.id,
+                'product_uom_qty': self.quantity,
+                'product_uom': self.material_id.product_id.uom_id.id,
+                'picking_id': picking.id,
+                'location_id': picking.location_id.id,
+                'location_dest_id': picking.location_dest_id.id,
+            })
+        picking.action_confirm()
+        picking.action_assign()
+        for pack_operation in picking.move_lines:
+            pack_operation.quantity_done = pack_operation.product_uom_qty
+        picking.button_validate()
 
 
 class ProjectUsedQuantity(models.Model):
@@ -206,6 +270,7 @@ class ProjectScrapMove(models.Model):
                                 })
         stock_picking = self.env['stock.picking']
         stock_move = self.env['stock.move']
+        log(self.material_id.task_id.picking_type_id.id)
         picking = stock_picking.create({'picking_type_id': self.material_id.task_id.picking_type_id.id,
                                         'location_id': self.material_id.task_id.stock_location_id.id,
                                         'location_dest_id': self.scrap_location_id.id,

@@ -239,8 +239,47 @@ class ProjectWasteManagement(models.Model):
                                         string="Waste Location",
                                         )
     description = fields.Text(string='Description')
+    used_qty = fields.Float(string='Used Quantity', readonly=True)
+    consumptionprogress = fields.Float(string="Consumption",
+                                        compute='consumption_progress')
+    withdrawalprogress = fields.Float(string="Material Withdrawal Progress",
+                                       compute="consumption_progress")
     cutted_portion = fields.Float(string='Cutted Portion')
     cutted_qty = fields.Float(string='')
+
+    @api.depends('used_qty', 'qty')
+    def consumption_progress(self):
+        for ids in self:
+            if ids.used_qty or ids.qty:
+                  scrap_product = self.env['project.scrap.products'].search([
+                      ('task_id', '=', ids.task_id.id),
+                      ('product_id', '=', ids.new_product_id.id)])
+                  qty = 0
+                  for scrap in scrap_product:
+                      qty += scrap.qty
+                  consumption = ((ids.used_qty + qty) / ids.qty * 100)
+                  withdrawal = (ids.qty / ids.qty * 100)
+                  ids.update({
+                      'consumptionprogress': consumption,
+                      'withdrawalprogress': withdrawal})
+
+    @api.multi
+    def actionusedqty(self):
+        return {
+            'name': _('Used Quantity'),
+            'type': 'ir.actions.act_window',
+            'res_model': 'project.used.quantity.waste.management',
+            'view_type': 'form',
+            'view_mode': 'form',
+            'view_id': self.env.ref('construction_boq_and_material_management.project_used_quantity_waste_management_form').ids,
+            'target': 'new',
+            'context': {
+                'default_product_id': self.product_id.id,
+                 'default_material_id': self.id,
+                 'task_id': self.task_id.id,
+                 'received': self.qty
+                 }
+            }
 
 
 class ProjectScrapProducts(models.Model):
